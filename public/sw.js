@@ -1,5 +1,5 @@
-var CACHE = "eldia-fridge-v1";
-var ASSETS = ["/", "/config.js"];
+var CACHE = "eldia-fridge-v2";
+var ASSETS = ["/"];
 
 self.addEventListener("install", function(e) {
   self.skipWaiting();
@@ -14,7 +14,8 @@ self.addEventListener("activate", function(e) {
 });
 
 self.addEventListener("fetch", function(e) {
-  if(e.request.url.includes("supabase.co")) return;
+  // config.jsとsupabase通信はキャッシュしない
+  if(e.request.url.includes("config.js") || e.request.url.includes("supabase.co")) return;
   e.respondWith(caches.match(e.request).then(function(r) {
     return r || fetch(e.request).then(function(res) {
       var rc = res.clone();
