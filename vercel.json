@@ -1,15 +1,17 @@
 {
   "rewrites": [
-    { "source": "/config.js", "destination": "/api/config" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/config.js", "destination": "/config.js" },
+    { "source": "/sw.js", "destination": "/sw.js" },
+    { "source": "/manifest.json", "destination": "/manifest.json" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
-    {
-      "source": "/sw.js",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
-        { "key": "Service-Worker-Allowed", "value": "/" }
-      ]
-    }
+    { "source": "/sw.js", "headers": [
+      { "key": "Cache-Control", "value": "no-store" },
+      { "key": "Service-Worker-Allowed", "value": "/" }
+    ]},
+    { "source": "/config.js", "headers": [
+      { "key": "Cache-Control", "value": "no-store" }
+    ]}
   ]
 }
