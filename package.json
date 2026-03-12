@@ -1,0 +1,6 @@
+{
+  "name": "eldia-fridge-manager",
+  "version": "1.0.0",
+  "description": "HOTEL ELDIA 神戸 冷蔵庫棚卸管理",
+  "engines": { "node": ">=18" }
+}
