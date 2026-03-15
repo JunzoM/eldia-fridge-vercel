@@ -1,4 +1,4 @@
-var CACHE = "eldia-fridge-v4";
+var CACHE = "eldia-fridge-v5";
 var ASSETS = ["/"];
 
 self.addEventListener("install", function(e) {

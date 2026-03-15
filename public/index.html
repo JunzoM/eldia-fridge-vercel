@@ -82,7 +82,7 @@ function sbLoad(cb){
 
 function sbSave(rn,idx,nm,exp,onOk,onErr){
   if(!SB_URL){if(onOk)onOk();return;}
-  fetch(SB_URL+"/rest/v1/fridge_items",{
+  fetch(SB_URL+"/rest/v1/fridge_items?on_conflict=room_no,slot_idx",{
     method:"POST",
     headers:Object.assign({"Prefer":"resolution=merge-duplicates,return=minimal"},sbH()),
     body:JSON.stringify({room_no:String(rn),slot_idx:idx,name:nm||"",expiry_date:exp||"",updated_at:new Date().toISOString()})
