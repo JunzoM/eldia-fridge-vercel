@@ -23,7 +23,11 @@ export const NAMES = [
   'ポカリスウェット', 'クリスタルガイザー', 'Red Bull', 'キリン一番搾り',
   'アサヒスーパードライ', 'のどごし生', '氷結レモン', 'パワフルコールド',
   'ダース ミルク', 'フリースペース①', 'フリースペース②',
+  'ストロングD', // 17番目: NameModal プリセット表示用（デフォルトスロットには含まない）
 ];
+
+/** 冷蔵庫スロット数 (4×4 グリッド固定) */
+export const SLOT_COUNT = 16;
 
 export const CORRECT_PIN = '0123';
 export const LS_DATA = 'elv7';

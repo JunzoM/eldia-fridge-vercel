@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import type { MenuState } from '@/lib/types';
-import { calcStatus, daysLeft, formatDate, nextMonthEnd, thisMonthEnd, toIso } from '@/lib/utils';
+import { calcStatus, daysLeft, formatDate, nextMonthEnd, toIso } from '@/lib/utils';
 import BottomSheet from './BottomSheet';
 
 interface DateModalProps {
@@ -18,13 +18,17 @@ interface DateModalProps {
 export default function DateModal({ menu, current, name, label, onSave, onClose }: DateModalProps) {
   const [val, setVal] = useState(current || '');
 
-  const tme = thisMonthEnd();
   const nme = nextMonthEnd();
+  function addMonths(n: number): Date {
+    const d = new Date();
+    d.setMonth(d.getMonth() + n);
+    return d;
+  }
   const quickDates = [
-    { label: `今月末 ${tme.getMonth() + 1}/${tme.getDate()}`, date: toIso(tme) },
     { label: `来月末 ${nme.getMonth() + 1}/${nme.getDate()}`, date: toIso(nme) },
-    { label: '3ヶ月後', date: toIso(new Date(new Date().setMonth(new Date().getMonth() + 3))) },
-    { label: '6ヶ月後', date: toIso(new Date(new Date().setMonth(new Date().getMonth() + 6))) },
+    { label: '3ヶ月後', date: toIso(addMonths(3)) },
+    { label: '6ヶ月後', date: toIso(addMonths(6)) },
+    { label: '9ヶ月後', date: toIso(addMonths(9)) },
   ];
 
   const dl = val ? daysLeft(val) : null;

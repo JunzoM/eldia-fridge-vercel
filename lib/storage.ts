@@ -1,10 +1,11 @@
 import type { FridgeData, HistoryEntry, RemData } from './types';
-import { NAMES, LS_DATA, LS_HISTORY, LS_REMOVED } from './constants';
+import { NAMES, SLOT_COUNT, LS_DATA, LS_HISTORY, LS_REMOVED } from './constants';
 
 export function initData(rooms: (string | number)[]): FridgeData {
   const d: FridgeData = {};
+  const defaults = NAMES.slice(0, SLOT_COUNT); // SLOT_COUNT=16 で固定、NAMES 追加分はプリセット専用
   rooms.forEach(r => {
-    d[r] = NAMES.map(n => ({ name: n, exp: '' }));
+    d[r] = defaults.map(n => ({ name: n, exp: '' }));
   });
   return d;
 }
