@@ -23,11 +23,11 @@ export default function HistoryView({ hist }: HistoryViewProps) {
       {hist.map((e, i) => (
         <div
           key={i}
-          className="bg-white border border-[#ede8df] rounded-xl px-4 py-3"
+          className="bg-white dark:bg-[#1c1c1e] border border-[#ede8df] dark:border-[#2d2d2d] rounded-xl px-4 py-3"
         >
           <div className="flex justify-between mb-1.5">
             <span className="text-[11px] text-gray-400">{e.rn}号室</span>
-            <span className="text-[10px] text-gray-300">
+            <span className="text-[10px] text-gray-300 dark:text-gray-600">
               {new Date(e.dt).toLocaleString('ja-JP', {
                 month: '2-digit',
                 day: '2-digit',
@@ -39,8 +39,8 @@ export default function HistoryView({ hist }: HistoryViewProps) {
           <div className="font-bold text-[14px] mb-2 leading-tight">{e.name}</div>
           <div className="flex items-center gap-2 text-[13px]">
             <span className="text-red-500">{formatDate(e.from) || '未設定'}</span>
-            <ArrowRight size={14} className="text-gray-300 flex-shrink-0" />
-            <span className="text-green-600 font-bold">{formatDate(e.to) || '—'}</span>
+            <ArrowRight size={14} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
+            <span className="text-green-600 dark:text-green-400 font-bold">{formatDate(e.to) || '—'}</span>
           </div>
         </div>
       ))}

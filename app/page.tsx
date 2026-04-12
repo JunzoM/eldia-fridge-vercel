@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTheme } from '@/lib/theme';
 import { FLOORS_M, FLOORS_L, LS_STORE, LS_PIN_OK } from '@/lib/constants';
 import type { FridgeData, HistoryEntry, RemData, MenuState, ViewType, StoreType, AlertItem, FloorData } from '@/lib/types';
 import { calcStatus, nextMonthEnd, slotLabel } from '@/lib/utils';
@@ -44,6 +45,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [sbReady, setSbReady] = useState(false);
   const editedRef = useRef(false);
+  const { theme, toggle: toggleTheme } = useTheme();
 
   // Load config & init
   useEffect(() => {
@@ -182,7 +184,7 @@ export default function Home() {
   const curSlots = room !== null ? (data[room] || []) : [];
 
   return (
-    <div className="max-w-[430px] mx-auto min-h-svh bg-cream">
+    <div className="max-w-[430px] mx-auto min-h-svh bg-cream dark:bg-[#111] transition-colors">
       {toast && <Toast msg={toast.msg} type={toast.type} />}
 
       <AppHeader
@@ -197,6 +199,8 @@ export default function Home() {
         sbReady={sbReady}
         onBack={() => setView('floors')}
         onAlerts={() => setView('alerts')}
+        isDark={theme === 'dark'}
+        onToggleTheme={toggleTheme}
       />
 
       <div className="pb-20">

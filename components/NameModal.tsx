@@ -33,7 +33,7 @@ export default function NameModal({ menu, current, label, onSave, onClose }: Nam
           </div>
           <button
             onClick={onClose}
-            className="bg-gray-100 rounded-lg p-2 text-gray-500 active:bg-gray-200"
+            className="bg-gray-100 dark:bg-[#2d2d2d] rounded-lg p-2 text-gray-500 dark:text-gray-400 active:bg-gray-200 dark:active:bg-[#383838]"
           >
             <X size={16} />
           </button>
@@ -50,7 +50,7 @@ export default function NameModal({ menu, current, label, onSave, onClose }: Nam
                 className={`text-[11px] font-bold px-2.5 py-1.5 rounded-lg border transition-colors ${
                   name === n
                     ? 'bg-charcoal text-white border-transparent'
-                    : 'bg-gray-50 text-gray-600 border-gray-200 active:bg-gray-100'
+                    : 'bg-gray-50 dark:bg-[#262626] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-[#333] active:bg-gray-100 dark:active:bg-[#333]'
                 }`}
               >
                 {n}
@@ -67,7 +67,7 @@ export default function NameModal({ menu, current, label, onSave, onClose }: Nam
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="品目名を入力（空欄で削除）"
-            className="w-full border-2 border-gray-200 rounded-xl px-4 py-3.5 text-base text-[#1a1a1a] bg-gray-50 focus:border-charcoal"
+            className="w-full border-2 border-gray-200 dark:border-[#333] rounded-xl px-4 py-3.5 text-base text-[#1a1a1a] dark:text-gray-100 bg-gray-50 dark:bg-[#262626] focus:border-charcoal dark:focus:border-gold"
           />
           {isEmpty && current && (
             <div className="flex items-center gap-1.5 mt-1.5 text-red-500 text-[11px] font-bold">
@@ -86,7 +86,7 @@ export default function NameModal({ menu, current, label, onSave, onClose }: Nam
               className={`py-3 rounded-xl text-sm font-bold border transition-colors ${
                 scope === 'this'
                   ? 'bg-charcoal text-white border-transparent'
-                  : 'bg-gray-50 text-gray-600 border-gray-200 active:bg-gray-100'
+                  : 'bg-gray-50 dark:bg-[#262626] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-[#333] active:bg-gray-100 dark:active:bg-[#333]'
               }`}
             >
               この部屋のみ
@@ -96,14 +96,14 @@ export default function NameModal({ menu, current, label, onSave, onClose }: Nam
               className={`py-3 rounded-xl text-sm font-bold border transition-colors ${
                 scope === 'all'
                   ? 'bg-sky-600 text-white border-transparent'
-                  : 'bg-gray-50 text-gray-600 border-gray-200 active:bg-gray-100'
+                  : 'bg-gray-50 dark:bg-[#262626] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-[#333] active:bg-gray-100 dark:active:bg-[#333]'
               }`}
             >
               全室に適用
             </button>
           </div>
           {scope === 'all' && (
-            <div className="mt-2 px-3 py-2 bg-sky-50 border border-sky-200 rounded-lg text-[11px] text-sky-700">
+            <div className="mt-2 px-3 py-2 bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 rounded-lg text-[11px] text-sky-700 dark:text-sky-400">
               全部屋の {label} スロットを変更します
             </div>
           )}
@@ -114,7 +114,7 @@ export default function NameModal({ menu, current, label, onSave, onClose }: Nam
           onClick={() => onSave(name.trim(), scope === 'all')}
           className={`w-full rounded-2xl py-4 text-base font-bold border-2 transition-colors ${
             isEmpty
-              ? 'bg-red-50 text-red-600 border-red-400 active:bg-red-100'
+              ? 'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border-red-400 active:bg-red-100 dark:active:bg-red-950/60'
               : 'bg-charcoal text-white border-transparent active:bg-[#3a3a3a]'
           }`}
         >

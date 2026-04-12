@@ -65,7 +65,7 @@ export default function DateModal({ menu, current, name, label, onSave, onClose 
           </div>
           <button
             onClick={onClose}
-            className="bg-gray-100 rounded-lg p-2 text-gray-500 active:bg-gray-200"
+            className="bg-gray-100 dark:bg-[#2d2d2d] rounded-lg p-2 text-gray-500 dark:text-gray-400 active:bg-gray-200 dark:active:bg-[#383838]"
           >
             <X size={16} />
           </button>
@@ -82,7 +82,7 @@ export default function DateModal({ menu, current, name, label, onSave, onClose 
                 className={`py-3 px-2 rounded-xl text-sm font-bold border transition-colors ${
                   val === q.date
                     ? 'bg-charcoal text-white border-transparent'
-                    : 'bg-gray-50 text-gray-700 border-gray-200 active:bg-gray-100'
+                    : 'bg-gray-50 dark:bg-[#262626] text-gray-700 dark:text-gray-300 border-gray-200 dark:border-[#333] active:bg-gray-100 dark:active:bg-[#333]'
                 }`}
               >
                 {q.label}
@@ -98,7 +98,7 @@ export default function DateModal({ menu, current, name, label, onSave, onClose 
             type="date"
             value={val}
             onChange={e => setVal(e.target.value)}
-            className={`w-full border-2 rounded-xl px-4 py-3.5 text-lg font-bold text-[#1a1a1a] bg-gray-50 ${borderColor}`}
+            className={`w-full border-2 rounded-xl px-4 py-3.5 text-lg font-bold text-[#1a1a1a] dark:text-gray-100 bg-gray-50 dark:bg-[#262626] ${borderColor}`}
           />
         </div>
 
@@ -109,7 +109,7 @@ export default function DateModal({ menu, current, name, label, onSave, onClose 
           className={`w-full rounded-2xl py-4 text-base font-bold transition-colors ${
             val
               ? 'bg-charcoal text-white active:bg-[#3a3a3a]'
-              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              : 'bg-gray-100 dark:bg-[#2d2d2d] text-gray-400 dark:text-gray-600 cursor-not-allowed'
           }`}
         >
           {val ? `${label} → ${formatDate(val)}` : '日付を選択してください'}

@@ -11,10 +11,10 @@ interface FloorsViewProps {
 }
 
 const STATUS_COLORS = {
-  red: { border: 'border-red-600', bg: 'bg-red-50', text: 'text-red-600', dot: 'bg-red-600' },
-  orange: { border: 'border-orange-500', bg: 'bg-orange-50', text: 'text-orange-500', dot: 'bg-orange-500' },
-  ok: { border: 'border-green-600', bg: 'bg-green-50', text: 'text-green-600', dot: 'bg-green-600' },
-  none: { border: 'border-gray-300', bg: 'bg-gray-50', text: 'text-gray-400', dot: 'bg-gray-300' },
+  red:    { border: 'border-red-600',                   bg: 'bg-red-50 dark:bg-red-950/40',    text: 'text-red-600',           dot: 'bg-red-600' },
+  orange: { border: 'border-orange-500',                bg: 'bg-orange-50 dark:bg-orange-950/40', text: 'text-orange-500',      dot: 'bg-orange-500' },
+  ok:     { border: 'border-green-600',                 bg: 'bg-green-50 dark:bg-green-950/40', text: 'text-green-600',         dot: 'bg-green-600' },
+  none:   { border: 'border-gray-300 dark:border-[#3a3a3a]', bg: 'bg-gray-50 dark:bg-[#262626]', text: 'text-gray-400',        dot: 'bg-gray-300 dark:bg-[#3a3a3a]' },
 };
 
 export default function FloorsView({ floors, data, rem, onOpen }: FloorsViewProps) {
@@ -22,20 +22,20 @@ export default function FloorsView({ floors, data, rem, onOpen }: FloorsViewProp
   const nmeStr = `${nme.getMonth() + 1}/${nme.getDate()}`;
 
   const legend = [
-    { color: 'bg-red-600', label: '要即交換' },
+    { color: 'bg-red-600',    label: '要即交換' },
     { color: 'bg-orange-500', label: `月末交換〜${nmeStr}` },
-    { color: 'bg-green-600', label: '正常' },
-    { color: 'bg-gray-300', label: '未入力' },
+    { color: 'bg-green-600',  label: '正常' },
+    { color: 'bg-gray-300 dark:bg-[#3a3a3a]', label: '未入力' },
   ];
 
   return (
     <div className="p-3 space-y-4">
       {/* Legend */}
-      <div className="bg-white rounded-xl px-4 py-3 shadow-sm flex flex-wrap gap-3">
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-xl px-4 py-3 shadow-sm dark:border dark:border-[#2d2d2d] flex flex-wrap gap-3">
         {legend.map(({ color, label }) => (
           <div key={label} className="flex items-center gap-1.5">
             <div className={`w-2.5 h-2.5 rounded-sm ${color}`} />
-            <span className="text-[10px] text-gray-500">{label}</span>
+            <span className="text-[10px] text-gray-500 dark:text-gray-400">{label}</span>
           </div>
         ))}
       </div>
@@ -60,7 +60,7 @@ export default function FloorsView({ floors, data, rem, onOpen }: FloorsViewProp
                     st === 'red' ? 'animate-blink' : ''
                   }`}
                 >
-                  <span className="font-bold text-base text-[#1a1a1a] leading-none">{r}</span>
+                  <span className="font-bold text-base text-[#1a1a1a] dark:text-gray-100 leading-none">{r}</span>
                   <span className={`text-[9px] font-bold ${c.text}`}>
                     {st === 'red' ? '要交換' : st === 'orange' ? '月末' : st === 'ok' ? '正常' : '未入力'}
                   </span>

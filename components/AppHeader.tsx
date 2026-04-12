@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, AlertTriangle, Wifi, WifiOff, Loader2 } from 'lucide-react';
+import { ChevronLeft, AlertTriangle, Wifi, WifiOff, Loader2, Sun, Moon } from 'lucide-react';
 import type { AlertItem, StoreType, ViewType } from '@/lib/types';
 
 interface AppHeaderProps {
@@ -15,14 +15,17 @@ interface AppHeaderProps {
   sbReady: boolean;
   onBack: () => void;
   onAlerts: () => void;
+  isDark: boolean;
+  onToggleTheme: () => void;
 }
 
 export default function AppHeader({
   store, onSwitchStore, view, room, loading,
   totalRemoved, alerts, hasRed, sbReady, onBack, onAlerts,
+  isDark, onToggleTheme,
 }: AppHeaderProps) {
   return (
-    <header className="bg-charcoal px-4 py-3 sticky top-0 z-50 flex items-center justify-between shadow-lg">
+    <header className="bg-charcoal dark:bg-[#0a0a0a] px-4 py-3 sticky top-0 z-50 flex items-center justify-between shadow-lg">
       {/* Left: title + store switcher */}
       <div className="flex items-center gap-2">
         {view === 'room' && (
@@ -55,7 +58,7 @@ export default function AppHeader({
         </div>
       </div>
 
-      {/* Right: badges */}
+      {/* Right: badges + theme toggle */}
       <div className="flex items-center gap-2">
         {loading && <Loader2 size={14} className="text-gold animate-spin" />}
 
@@ -90,6 +93,15 @@ export default function AppHeader({
             <span className="flex items-center gap-1"><WifiOff size={10} />LOCAL</span>
           )}
         </div>
+
+        {/* Theme toggle */}
+        <button
+          onClick={onToggleTheme}
+          className="w-7 h-7 flex items-center justify-center rounded-lg bg-[#3a3a3a] dark:bg-[#222] text-gold active:bg-[#444] transition-colors"
+          aria-label={isDark ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
+        >
+          {isDark ? <Sun size={14} /> : <Moon size={14} />}
+        </button>
       </div>
     </header>
   );

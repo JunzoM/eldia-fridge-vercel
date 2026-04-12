@@ -26,7 +26,7 @@ export default function MenuModal({
       <div className="px-4 pb-10 pt-2">
         {/* Slot info */}
         <div className="flex items-center gap-3 mb-5">
-          <div className="bg-charcoal text-white rounded-xl px-3 py-1.5 font-bold text-lg flex-shrink-0">
+          <div className="bg-charcoal dark:bg-[#0a0a0a] text-white rounded-xl px-3 py-1.5 font-bold text-lg flex-shrink-0">
             {label}
           </div>
           <div>
@@ -35,20 +35,19 @@ export default function MenuModal({
           </div>
         </div>
 
-        {/* Actions */}
         <div className="space-y-2.5">
           {isReturn ? (
             <>
               <button
                 onClick={onReturn}
-                className="w-full bg-green-50 border-2 border-green-500 rounded-2xl p-4 text-green-700 font-bold text-base flex items-center justify-center gap-3 active:bg-green-100"
+                className="w-full bg-green-50 dark:bg-green-950/40 border-2 border-green-500 rounded-2xl p-4 text-green-700 dark:text-green-400 font-bold text-base flex items-center justify-center gap-3 active:opacity-80"
               >
                 <PackageCheck size={20} />
                 元の場所に戻した
               </button>
               <button
                 onClick={onEditDate}
-                className="w-full bg-gray-50 border-2 border-gray-200 rounded-2xl p-4 text-gray-600 font-semibold text-[15px] flex items-center justify-center gap-3 active:bg-gray-100"
+                className="w-full bg-gray-50 dark:bg-[#262626] border-2 border-gray-200 dark:border-[#333] rounded-2xl p-4 text-gray-600 dark:text-gray-300 font-semibold text-[15px] flex items-center justify-center gap-3 active:opacity-80"
               >
                 <Pencil size={18} />
                 期限を更新する
@@ -58,21 +57,21 @@ export default function MenuModal({
             <>
               <button
                 onClick={onEditDate}
-                className="w-full bg-charcoal rounded-2xl p-4 text-white font-bold text-base flex items-center justify-center gap-3 active:bg-[#3a3a3a]"
+                className="w-full bg-charcoal dark:bg-[#0a0a0a] rounded-2xl p-4 text-white font-bold text-base flex items-center justify-center gap-3 active:opacity-80"
               >
                 <Pencil size={20} />
                 期限を更新する
               </button>
               <button
                 onClick={onEditName}
-                className="w-full bg-sky-50 border-2 border-sky-400 rounded-2xl p-4 text-sky-700 font-bold text-[15px] flex items-center justify-center gap-3 active:bg-sky-100"
+                className="w-full bg-sky-50 dark:bg-sky-950/40 border-2 border-sky-400 rounded-2xl p-4 text-sky-700 dark:text-sky-400 font-bold text-[15px] flex items-center justify-center gap-3 active:opacity-80"
               >
                 <Tag size={18} />
                 品目を変更・削除する
               </button>
               <button
                 onClick={onRemove}
-                className="w-full bg-amber-50 border-2 border-amber-400 rounded-2xl p-4 text-amber-800 font-bold text-[15px] flex items-center justify-center gap-3 active:bg-amber-100"
+                className="w-full bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-400 rounded-2xl p-4 text-amber-800 dark:text-amber-400 font-bold text-[15px] flex items-center justify-center gap-3 active:opacity-80"
               >
                 <PackageOpen size={18} />
                 取り出し中にする
@@ -82,7 +81,7 @@ export default function MenuModal({
 
           <button
             onClick={onClose}
-            className="w-full bg-gray-100 rounded-2xl p-3.5 text-gray-400 font-semibold text-sm flex items-center justify-center gap-2 active:bg-gray-200"
+            className="w-full bg-gray-100 dark:bg-[#2d2d2d] rounded-2xl p-3.5 text-gray-400 font-semibold text-sm flex items-center justify-center gap-2 active:opacity-80"
           >
             <X size={16} />
             キャンセル

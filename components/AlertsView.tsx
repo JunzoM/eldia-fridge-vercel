@@ -24,8 +24,8 @@ function Section({
   const notYet = list.filter(it => !rem[`${it.rn}-${it.idx}`]);
   const isRed = color === 'red';
   const colorCls = isRed
-    ? { border: 'border-red-500', text: 'text-red-600', bg: 'bg-red-600', leftBar: 'border-l-red-600', bgGone: 'bg-amber-50 border-amber-400 border-l-amber-400', badge: 'bg-red-600' }
-    : { border: 'border-orange-400', text: 'text-orange-600', bg: 'bg-orange-500', leftBar: 'border-l-orange-500', bgGone: 'bg-amber-50 border-amber-400 border-l-amber-400', badge: 'bg-orange-500' };
+    ? { border: 'border-red-500',   text: 'text-red-600',    bg: 'bg-red-600',    leftBar: 'border-l-red-600',    bgGone: 'bg-amber-50 dark:bg-amber-950/40 border-amber-400 border-l-amber-400' }
+    : { border: 'border-orange-400', text: 'text-orange-600', bg: 'bg-orange-500', leftBar: 'border-l-orange-500', bgGone: 'bg-amber-50 dark:bg-amber-950/40 border-amber-400 border-l-amber-400' };
 
   return (
     <div className="space-y-2">
@@ -49,26 +49,26 @@ function Section({
         return (
           <div
             key={i}
-            className={`bg-white rounded-xl px-4 py-3 flex items-center justify-between border border-l-4 ${
+            className={`bg-white dark:bg-[#1c1c1e] rounded-xl px-4 py-3 flex items-center justify-between border border-l-4 ${
               gone ? colorCls.bgGone : `${colorCls.border} ${colorCls.leftBar}`
             } ${gone ? 'opacity-70' : ''}`}
           >
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] bg-gray-100 rounded px-1.5 py-0.5 font-bold">{slotLabel(it.idx)}</span>
+                <span className="text-[10px] bg-gray-100 dark:bg-[#2d2d2d] dark:text-gray-300 rounded px-1.5 py-0.5 font-bold">{slotLabel(it.idx)}</span>
                 <span className="text-[10px] text-gray-400">{it.rn}号室</span>
                 {gone && (
-                  <span className="text-[10px] text-amber-800 font-bold bg-amber-100 rounded px-1.5 py-0.5">取り出し中</span>
+                  <span className="text-[10px] text-amber-800 dark:text-amber-400 font-bold bg-amber-100 dark:bg-amber-900/50 rounded px-1.5 py-0.5">取り出し中</span>
                 )}
               </div>
               <div className="font-bold text-[15px] leading-tight">{it.name}</div>
-              <div className={`text-sm font-bold mt-1 ${gone ? 'text-amber-700' : colorCls.text}`}>
+              <div className={`text-sm font-bold mt-1 ${gone ? 'text-amber-700 dark:text-amber-400' : colorCls.text}`}>
                 {formatDate(it.exp)}
               </div>
             </div>
             <button
               onClick={() => onOpen(it.rn)}
-              className="bg-gray-100 text-gray-600 border border-gray-200 rounded-lg px-3 py-2 text-xs font-bold flex items-center gap-1 active:bg-gray-200"
+              className="bg-gray-100 dark:bg-[#2d2d2d] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-[#3a3a3a] rounded-lg px-3 py-2 text-xs font-bold flex items-center gap-1 active:bg-gray-200 dark:active:bg-[#383838]"
             >
               部屋へ <ArrowRight size={12} />
             </button>
@@ -101,8 +101,8 @@ export default function AlertsView({ items, rem, onOpen, onBulkRemove }: AlertsV
 
   return (
     <div className="p-4 space-y-5">
-      {/* Summary card */}
-      <div className="bg-charcoal rounded-2xl p-4">
+      {/* Summary */}
+      <div className="bg-charcoal dark:bg-[#0a0a0a] rounded-2xl p-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-[12px] font-bold text-gray-400 tracking-wider">SUMMARY</span>
           <span className="bg-red-600 text-white rounded-full px-3 py-0.5 text-sm font-bold">
@@ -113,7 +113,7 @@ export default function AlertsView({ items, rem, onOpen, onBulkRemove }: AlertsV
           {Object.keys(summary).sort().map(k => {
             const s = summary[k];
             return (
-              <div key={k} className="bg-[#2c2c2c] rounded-xl px-3 py-2 flex items-center justify-between border border-white/5">
+              <div key={k} className="bg-[#2c2c2c] dark:bg-[#1a1a1a] rounded-xl px-3 py-2 flex items-center justify-between border border-white/5">
                 <span className="text-[12px] font-bold text-white flex-1 mr-2 leading-tight">{k}</span>
                 <div className="flex gap-1 items-center flex-shrink-0">
                   {s.red > 0 && (

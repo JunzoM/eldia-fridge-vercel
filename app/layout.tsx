@@ -23,7 +23,13 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">
-      <body className="bg-cream font-sans text-[#1a1a1a] antialiased">
+      {/* アンチフラッシュ: レンダリング前にダーククラスをセット */}
+      <head>
+        <script dangerouslySetInnerHTML={{ __html:
+          `(function(){var t=localStorage.getItem('eldia_theme');var d=!t&&window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||d)document.documentElement.classList.add('dark');})()`
+        }} />
+      </head>
+      <body className="bg-cream dark:bg-[#111] font-sans text-[#1a1a1a] dark:text-gray-100 antialiased transition-colors">
         {children}
         <script
           dangerouslySetInnerHTML={{

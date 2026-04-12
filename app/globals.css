@@ -30,3 +30,10 @@ input {
 input[type='date'] {
   color-scheme: light;
 }
+
+/* ダークモード: 取り出し中スロットのハッチパターンを暗く */
+.dark .bg-hatch {
+  background-image: repeating-linear-gradient(
+    45deg, #2d2d2d, #2d2d2d 4px, #222 4px, #222 8px
+  ) !important;
+}
