@@ -12,7 +12,16 @@ export function initData(rooms: (string | number)[]): FridgeData {
 export function loadData(rooms: (string | number)[]): FridgeData {
   try {
     const raw = localStorage.getItem(LS_DATA);
-    if (raw) return JSON.parse(raw) as FridgeData;
+    if (raw) {
+      const stored = JSON.parse(raw) as FridgeData;
+      const defaults = initData(rooms);
+      // ストアが切り替わった場合に未保存の部屋をデフォルト値で補完する
+      const result: FridgeData = {};
+      rooms.forEach(r => {
+        result[r] = stored[r] ?? defaults[r];
+      });
+      return result;
+    }
   } catch {}
   return initData(rooms);
 }
