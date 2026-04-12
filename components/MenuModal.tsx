@@ -1,0 +1,94 @@
+'use client';
+
+import { Pencil, Tag, PackageOpen, PackageCheck, X } from 'lucide-react';
+import type { MenuState } from '@/lib/types';
+import BottomSheet from './BottomSheet';
+
+interface MenuModalProps {
+  menu: MenuState;
+  name: string;
+  label: string;
+  onEditDate: () => void;
+  onEditName: () => void;
+  onRemove: () => void;
+  onReturn: () => void;
+  onClose: () => void;
+}
+
+export default function MenuModal({
+  menu, name, label,
+  onEditDate, onEditName, onRemove, onReturn, onClose,
+}: MenuModalProps) {
+  const isReturn = menu.mode === 'ret';
+
+  return (
+    <BottomSheet onClose={onClose}>
+      <div className="px-4 pb-10 pt-2">
+        {/* Slot info */}
+        <div className="flex items-center gap-3 mb-5">
+          <div className="bg-charcoal text-white rounded-xl px-3 py-1.5 font-bold text-lg flex-shrink-0">
+            {label}
+          </div>
+          <div>
+            <div className="font-bold text-lg leading-tight">{name || '（未設定）'}</div>
+            <div className="text-[11px] text-gray-400 mt-0.5">{menu.rn}号室</div>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="space-y-2.5">
+          {isReturn ? (
+            <>
+              <button
+                onClick={onReturn}
+                className="w-full bg-green-50 border-2 border-green-500 rounded-2xl p-4 text-green-700 font-bold text-base flex items-center justify-center gap-3 active:bg-green-100"
+              >
+                <PackageCheck size={20} />
+                元の場所に戻した
+              </button>
+              <button
+                onClick={onEditDate}
+                className="w-full bg-gray-50 border-2 border-gray-200 rounded-2xl p-4 text-gray-600 font-semibold text-[15px] flex items-center justify-center gap-3 active:bg-gray-100"
+              >
+                <Pencil size={18} />
+                期限を更新する
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={onEditDate}
+                className="w-full bg-charcoal rounded-2xl p-4 text-white font-bold text-base flex items-center justify-center gap-3 active:bg-[#3a3a3a]"
+              >
+                <Pencil size={20} />
+                期限を更新する
+              </button>
+              <button
+                onClick={onEditName}
+                className="w-full bg-sky-50 border-2 border-sky-400 rounded-2xl p-4 text-sky-700 font-bold text-[15px] flex items-center justify-center gap-3 active:bg-sky-100"
+              >
+                <Tag size={18} />
+                品目を変更・削除する
+              </button>
+              <button
+                onClick={onRemove}
+                className="w-full bg-amber-50 border-2 border-amber-400 rounded-2xl p-4 text-amber-800 font-bold text-[15px] flex items-center justify-center gap-3 active:bg-amber-100"
+              >
+                <PackageOpen size={18} />
+                取り出し中にする
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={onClose}
+            className="w-full bg-gray-100 rounded-2xl p-3.5 text-gray-400 font-semibold text-sm flex items-center justify-center gap-2 active:bg-gray-200"
+          >
+            <X size={16} />
+            キャンセル
+          </button>
+        </div>
+      </div>
+    </BottomSheet>
+  );
+}
