@@ -21,7 +21,7 @@ const NAV_ITEMS = [
 
 export default function BottomNav({ view, onNav, alertCount, hasRed, totalRemoved }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-charcoal dark:bg-[#0a0a0a] border-t border-[#3a3a3a] dark:border-[#222] grid grid-cols-5 pb-safe z-40">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white dark:bg-[#0a0a0a] border-t border-gray-200 dark:border-[#222] grid grid-cols-5 pb-safe z-40">
       {NAV_ITEMS.map(({ id, icon: Icon, label }) => {
         const active = view === id || (view === 'room' && id === 'floors');
         const badge =
@@ -33,7 +33,7 @@ export default function BottomNav({ view, onNav, alertCount, hasRed, totalRemove
           <button
             key={id}
             onClick={() => onNav(id)}
-            className="flex flex-col items-center gap-1 py-2 relative active:bg-white/5"
+            className="flex flex-col items-center gap-1 py-2 relative active:bg-black/5 dark:active:bg-white/5"
           >
             {badge > 0 && (
               <span
@@ -46,8 +46,8 @@ export default function BottomNav({ view, onNav, alertCount, hasRed, totalRemove
                 {badge}
               </span>
             )}
-            <Icon size={18} className={active ? 'text-gold' : 'text-[#555]'} />
-            <span className={`text-[9px] font-medium ${active ? 'text-gold' : 'text-[#555]'}`}>
+            <Icon size={18} className={active ? 'text-charcoal dark:text-gold' : 'text-gray-400 dark:text-[#555]'} />
+            <span className={`text-[9px] font-medium ${active ? 'text-charcoal dark:text-gold' : 'text-gray-400 dark:text-[#555]'}`}>
               {label}
             </span>
           </button>

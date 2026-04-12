@@ -25,19 +25,19 @@ export default function AppHeader({
   isDark, onToggleTheme,
 }: AppHeaderProps) {
   return (
-    <header className="bg-charcoal dark:bg-[#0a0a0a] px-4 py-3 sticky top-0 z-50 flex items-center justify-between shadow-lg">
+    <header className="bg-white dark:bg-[#0a0a0a] border-b border-gray-200 dark:border-[#1a1a1a] px-4 py-3 sticky top-0 z-50 flex items-center justify-between shadow-sm dark:shadow-none">
       {/* Left: title + store switcher */}
       <div className="flex items-center gap-2">
         {view === 'room' && (
           <button
             onClick={onBack}
-            className="text-gold p-1 -ml-1 rounded-lg active:bg-white/10"
+            className="text-charcoal dark:text-gold p-1 -ml-1 rounded-lg active:bg-black/5 dark:active:bg-white/10"
           >
             <ChevronLeft size={24} />
           </button>
         )}
         <div>
-          <div className="text-sm font-bold text-white leading-tight">
+          <div className="text-sm font-bold text-charcoal dark:text-white leading-tight">
             {view === 'room' && room !== null ? `${room}号室` : 'HOTEL ELDIA 神戸'}
           </div>
           <div className="flex gap-1.5 mt-1">
@@ -48,7 +48,7 @@ export default function AppHeader({
                 className={`text-[9px] font-bold px-2.5 py-0.5 rounded-full transition-colors ${
                   store === s
                     ? 'bg-gold text-[#1a1a1a]'
-                    : 'bg-[#444] text-[#888] active:bg-[#555]'
+                    : 'bg-gray-200 dark:bg-[#444] text-gray-500 dark:text-[#888] active:bg-gray-300 dark:active:bg-[#555]'
                 }`}
               >
                 {s === 'M' ? 'モダン' : 'ラグジュアリー'}
@@ -63,7 +63,7 @@ export default function AppHeader({
         {loading && <Loader2 size={14} className="text-gold animate-spin" />}
 
         {totalRemoved > 0 && (
-          <div className="bg-amber-900 text-yellow-200 rounded-full px-2.5 py-0.5 text-[11px] font-bold">
+          <div className="bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-yellow-200 rounded-full px-2.5 py-0.5 text-[11px] font-bold">
             {totalRemoved}本取出中
           </div>
         )}
@@ -83,8 +83,8 @@ export default function AppHeader({
         <div
           className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
             sbReady
-              ? 'bg-green-900/60 text-green-400'
-              : 'bg-[#3a3a3a] text-gold'
+              ? 'bg-green-100 dark:bg-green-900/60 text-green-700 dark:text-green-400'
+              : 'bg-gray-100 dark:bg-[#3a3a3a] text-gray-600 dark:text-gold'
           }`}
         >
           {sbReady ? (
@@ -97,7 +97,7 @@ export default function AppHeader({
         {/* Theme toggle */}
         <button
           onClick={onToggleTheme}
-          className="w-7 h-7 flex items-center justify-center rounded-lg bg-[#3a3a3a] dark:bg-[#222] text-gold active:bg-[#444] transition-colors"
+          className="w-7 h-7 flex items-center justify-center rounded-lg bg-gray-200 dark:bg-[#222] text-charcoal dark:text-gold active:bg-gray-300 dark:active:bg-[#333] transition-colors"
           aria-label={isDark ? 'ライトモードに切り替え' : 'ダークモードに切り替え'}
         >
           {isDark ? <Sun size={14} /> : <Moon size={14} />}
