@@ -58,6 +58,13 @@ function pushH(e){var hh=loadH();hh.unshift(e);try{localStorage.setItem(LH,JSON.
 function loadR(){try{return JSON.parse(localStorage.getItem(LR)||"{}");}catch(e){return{};}}
 function saveR(d){try{localStorage.setItem(LR,JSON.stringify(d));}catch(e){}}
 
+var LP="eldia_pv1";
+function loadP(){try{return JSON.parse(localStorage.getItem(LP)||"[]");}catch(e){return[];}}
+function saveP(q){try{localStorage.setItem(LP,JSON.stringify(q));}catch(e){}}
+function addP(st,rn,idx,nm,exp){var q=loadP();var found=false;q=q.map(function(it){if(it.st===st&&it.rn===rn&&it.idx===idx){found=true;return{st:st,rn:rn,idx:idx,nm:nm,exp:exp};}return it;});if(!found)q.push({st:st,rn:rn,idx:idx,nm:nm,exp:exp});saveP(q);}
+function rmP(st,rn,idx){saveP(loadP().filter(function(it){return!(it.st===st&&it.rn===rn&&it.idx===idx);}));}
+function hasPendingForStore(st){return loadP().some(function(it){return it.st===st;});}
+
 function sbLoad(cb){
   if(!SB_URL){cb(false,null,null);return;}
   Promise.all([
@@ -145,7 +152,13 @@ function App(){
 
   useEffect(function(){
     if(!pinOk)return;
-    editedRef.current=false;
+    var pq=loadP().filter(function(it){return it.st===store;});
+    if(pq.length>0){
+      editedRef.current=true;
+      pq.forEach(function(it){sbSave(it.rn,it.idx,it.nm,it.exp,function(){rmP(store,it.rn,it.idx);},function(){});});
+    }else{
+      editedRef.current=false;
+    }
     sbLoad(function(ok,nd,remData){
       setLoading(false);
       if(ok&&nd&&!editedRef.current){saveD(nd);setData(nd);}
@@ -154,7 +167,7 @@ function App(){
     });
   },[pinOk]);
 
-  function persist(nd){setData(nd);saveD(nd);}  function switchStore(s){setStore(s);setStoreSt(s);setData(loadD());setRem(loadR());setView("floors");setRoom(null);sbLoad(function(ok,nd,remData){setLoading(false);if(ok&&nd){saveD(nd);setData(nd);}else{setData(loadD());}if(ok&&remData){saveR(remData);setRem(remData);}else{setRem(loadR());}});}
+  function persist(nd){setData(nd);saveD(nd);}  function switchStore(s){setStore(s);setStoreSt(s);setData(loadD());setRem(loadR());setView("floors");setRoom(null);sbLoad(function(ok,nd,remData){setLoading(false);var hp=hasPendingForStore(s);if(ok&&nd&&!hp){saveD(nd);setData(nd);}else{setData(loadD());}if(ok&&remData&&!hp){saveR(remData);setRem(remData);}else{setRem(loadR());}});}
   function pR(nr){setRem(nr);saveR(nr);}
   function shT(msg,t){setToast({msg:msg,t:t||"ok"});setTimeout(function(){setToast(null);},2200);}
   function isRm(rn,i){return!!rem[rn+"-"+i];}
@@ -169,11 +182,13 @@ function App(){
     var fr=(data[rn]&&data[rn][idx]&&data[rn][idx].exp)||"";
     var nd=Object.assign({},data);nd[rn]=data[rn].slice();nd[rn][idx]=Object.assign({},data[rn][idx],{exp:nd2});
     persist(nd);pushH({dt:new Date().toISOString(),rn:rn,name:nm,from:fr,to:nd2});setHist(loadH());
-    sbSave(rn,idx,nm,nd2,function(){shT(L.upded);},function(code){shT("SB保存失敗("+code+")","err");});
+    addP(store,rn,idx,nm,nd2);
+    sbSave(rn,idx,nm,nd2,function(){rmP(store,rn,idx);shT(L.upded);},function(code){shT("SB保存失敗("+code+")","err");});
   }
   function upN(rn,idx,nn,all){
+    editedRef.current=true;
     var nd=Object.assign({},data);var tg=all?ALL:[rn];
-    tg.forEach(function(r){nd[r]=(nd[r]||[]).slice();nd[r][idx]=Object.assign({},nd[r][idx],{name:nn,exp:""});sbSave(r,idx,nn,"");});
+    tg.forEach(function(r){nd[r]=(nd[r]||[]).slice();nd[r][idx]=Object.assign({},nd[r][idx],{name:nn,exp:""});addP(store,r,idx,nn,"");sbSave(r,idx,nn,"",function(){rmP(store,r,idx);},function(){});});
     persist(nd);shT(nn?L.itCh:L.itDel);
   }
 
