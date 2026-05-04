@@ -12,6 +12,9 @@
     ]},
     { "source": "/config.js", "headers": [
       { "key": "Cache-Control", "value": "no-store" }
+    ]},
+    { "source": "/(.*)", "headers": [
+      { "key": "X-Frame-Options", "value": "ALLOWALL" }
     ]}
   ]
 }
