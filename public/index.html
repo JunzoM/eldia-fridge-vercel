@@ -241,6 +241,7 @@ function App(){
   var sen=useState(null);var eN=sen[0],setEN=sen[1];
   var sld=useState(true);var loading=sld[0],setLoading=sld[1];
   var sdm=useState(!document.documentElement.classList.contains("light"));var darkMode=sdm[0],setDarkMode=sdm[1];
+  var sfl=useState(null);var selF=sfl[0],setSelF=sfl[1];
   var editedRef=useRef(false);
 
   useEffect(function(){
@@ -341,7 +342,7 @@ function App(){
   );
 
   var contentViews=h("div",{className:"content-wrap",style:{paddingBottom:isDesk?24:80}},
-    view==="floors"&&h(FV,{data:data,rem:rem,nme:nme,isDesk:isDesk,onOpen:function(r){setRoom(r);setView("room");}}),
+    view==="floors"&&h(FV,{data:data,rem:rem,nme:nme,isDesk:isDesk,selF:selF,setSelF:setSelF,onOpen:function(r){setRoom(r);setView("room");}}),
     view==="room"&&h(RV,{rn:room,slots:data[room]||[],isRm:isRm,isDesk:isDesk,onTap:function(rn,idx){setMenu({rn:rn,idx:idx,mode:isRm(rn,idx)?"ret":"norm"});}}),
     view==="alerts"&&h(AV,{items:alerts,rem:rem,onOpen:function(r){setRoom(r);setView("room");},onBulkRem:bulkRem}),
     view==="restock"&&h(RestockV,{data:data,rem:rem}),
@@ -415,7 +416,7 @@ function App(){
 function FV(p){
   var nme=p.nme||nME();
   var pad=p.isDesk?"20px 24px":"14px 12px";
-  var sf=useState(null);var selF=sf[0],setSelF=sf[1];
+  var selF=p.selF,setSelF=p.setSelF;
   return h("div",{style:{padding:pad}},
     h("div",{style:{background:"var(--brand-surface)",borderRadius:12,padding:"10px 14px",marginBottom:14,display:"flex",gap:14,flexWrap:"wrap",border:"1px solid var(--brand-border)"}},
       [{c:"var(--brand-red)",l:L.immSw},{c:"var(--brand-yellow)",l:L.monSw+"～"+(nme.getMonth()+1)+"/"+nme.getDate()},{c:"var(--brand-green)",l:L.norm},{c:"var(--brand-muted)",l:L.noIn}].map(function(x){
