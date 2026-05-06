@@ -36,10 +36,10 @@
 }
 /* ライトテーマ (.light クラスを <html> に付与) */
 .light {
-  --brand-bg:       #f5f5f5;
+  --brand-bg:       #ede9e3;
   --brand-surface:  #ffffff;
-  --brand-surface2: #eeeeee;
-  --brand-border:   #e0e0e0;
+  --brand-surface2: #ccc8c0;
+  --brand-border:   #b8b2a8;
   --brand-accent:   #b8860b;
   --brand-text:     #1a1614;
   --brand-muted:    #6b6456;
@@ -398,13 +398,20 @@ function App(){
 function FV(p){
   var nme=p.nme||nME();
   var pad=p.isDesk?"20px 24px":"14px 12px";
+  var sf=useState(null);var selF=sf[0],setSelF=sf[1];
   return h("div",{style:{padding:pad}},
     h("div",{style:{background:"var(--brand-surface)",borderRadius:12,padding:"10px 14px",marginBottom:14,display:"flex",gap:14,flexWrap:"wrap",border:"1px solid var(--brand-border)"}},
       [{c:"var(--brand-red)",l:L.immSw},{c:"var(--brand-yellow)",l:L.monSw+"～"+(nme.getMonth()+1)+"/"+nme.getDate()},{c:"var(--brand-green)",l:L.norm},{c:"var(--brand-muted)",l:L.noIn}].map(function(x){
         return h("div",{key:x.l,style:{display:"flex",alignItems:"center",gap:5}},h("div",{style:{width:9,height:9,borderRadius:3,background:x.c}}),h("span",{style:{fontSize:10,color:"var(--brand-muted)"}},x.l));
       })
     ),
-    FLOORS.map(function(fl){
+    h("div",{style:{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}},
+      [{f:null,label:"全て"}].concat(FLOORS.map(function(fl){return{f:fl.f,label:fl.f};})).map(function(item){
+        var active=selF===item.f;
+        return h("button",{key:item.label,onClick:function(){setSelF(item.f);},style:{padding:"4px 12px",borderRadius:20,border:"1px solid "+(active?"var(--brand-accent)":"var(--brand-border)"),background:active?"var(--brand-accent)":"var(--brand-surface)",color:active?"var(--brand-bg)":"var(--brand-muted)",fontSize:11,fontWeight:active?700:400,cursor:"pointer",transition:"all .15s"}},item.label);
+      })
+    ),
+    FLOORS.filter(function(fl){return selF===null||fl.f===selF;}).map(function(fl){
       return h("div",{key:fl.f,style:{marginBottom:22}},
         h("div",{style:{fontSize:11,fontWeight:700,color:"var(--brand-muted)",letterSpacing:"0.1em",marginBottom:10}},fl.f),
         h("div",{className:"room-grid"},fl.rooms.map(function(r){
@@ -473,7 +480,7 @@ function RV(p){
                     gone?h("div",{style:{width:"100%",minHeight:44,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3}},
                       h("div",{style:{fontSize:16,opacity:.4}},"📫"),
                       h("span",{style:{fontSize:8,color:"var(--brand-yellow)",fontWeight:700,textAlign:"center",lineHeight:1.3}},slot.name))
-                    :h("div",{style:{background:"var(--brand-bg)",borderRadius:4,padding:"5px 3px",width:"100%",minHeight:44,display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid var(--brand-border)"}},
+                    :h("div",{style:{background:"var(--brand-surface)",borderRadius:4,padding:"5px 3px",width:"100%",minHeight:44,display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid var(--brand-border)"}},
                       h("span",{style:{fontSize:slot.name?9:8,fontWeight:700,color:slot.name?"var(--brand-text)":"var(--brand-muted)",textAlign:"center",lineHeight:1.3,wordBreak:"keep-all"}},slot.name||""))
                   ),
                   h("div",{style:{background:"var(--brand-surface2)",padding:"5px 3px",textAlign:"center",borderTop:"1px solid var(--brand-border)"}},
