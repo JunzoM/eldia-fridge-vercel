@@ -356,7 +356,7 @@ function App(){
   );
 
   var contentViews=h("div",{className:"content-wrap",style:{paddingBottom:isDesk?24:80}},
-    view==="floors"&&h(FV,{data:data,rem:rem,nme:nme,isDesk:isDesk,selF:selF,setSelF:setSelF,onOpen:function(r){setRoom(r);setView("room");}}),
+    view==="floors"&&h(FV,{data:data,rem:rem,nme:nme,isDesk:isDesk,store:store,selF:selF,setSelF:setSelF,onOpen:function(r){setRoom(r);setView("room");}}),
     view==="room"&&h(RV,{rn:room,slots:data[room]||[],isRm:isRm,isDesk:isDesk,selF:selF,onFloor:function(f){setSelF(f);setView("floors");},onTap:function(rn,idx){setMenu({rn:rn,idx:idx,mode:isRm(rn,idx)?"ret":"norm"});}}),
     view==="alerts"&&h(AV,{items:alerts,rem:rem,onOpen:function(r){setRoom(r);setView("room");},onBulkRem:bulkRem}),
     view==="restock"&&h(RestockV,{data:data,rem:rem}),
@@ -413,7 +413,7 @@ function App(){
       ),
       h("div",{style:{background:isOnline?"#22c55e":"var(--brand-red)",color:"#fff",fontSize:10,fontWeight:700,textAlign:"center",padding:"3px 0",letterSpacing:"0.05em",position:"sticky",top:44,zIndex:99}},isOnline?"● オンライン":"● オフライン"),
       h("div",{style:{paddingBottom:96}},contentViews),
-      h("nav",{className:"bot-nav",style:{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:appW,background:"var(--brand-surface)",borderTop:"1px solid var(--brand-border)",display:"flex",alignItems:"flex-end",justifyContent:"space-around",padding:"8px 16px 20px",zIndex:100}},
+      h("nav",{className:"bot-nav",style:{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:appW,background:"var(--brand-surface)",borderTop:"1px solid var(--brand-border)",display:"flex",alignItems:"flex-end",justifyContent:"space-around",padding:"6px 8px 16px",zIndex:100}},
         h("button",{onClick:function(){setView("alerts");},style:{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",cursor:"pointer",position:"relative",paddingBottom:2}},
           h("span",{style:{color:view==="alerts"?"var(--brand-accent)":"var(--brand-muted)"}},Ico("alert",22)),
           alerts.length>0&&h("div",{style:{position:"absolute",top:-2,right:"50%",marginRight:-14,background:"var(--brand-red)",color:"#fff",borderRadius:10,padding:"1px 5px",fontSize:9,fontWeight:700}},alerts.length),
@@ -451,7 +451,7 @@ function FV(p){
     FLOORS.filter(function(fl){return selF===null||fl.f===selF;}).map(function(fl){
       return h("div",{key:fl.f,style:{marginBottom:22}},
         h("div",{style:{fontSize:11,fontWeight:700,color:"var(--brand-muted)",letterSpacing:"0.1em",marginBottom:10}},fl.f),
-        h("div",{className:"room-grid"},fl.rooms.map(function(r){
+        h("div",{style:{display:"grid",gridTemplateColumns:p.isDesk?"repeat(auto-fill,minmax(90px,1fr))":p.store==="L"?"repeat(5,1fr)":"repeat(4,1fr)",gap:8}},fl.rooms.map(function(r){
           var st=rSt(r,p.data);
           var bc=st==="red"?"var(--brand-red)":st==="orange"?"var(--brand-yellow)":st==="ok"?"var(--brand-green)":"var(--brand-border)";
           var bg=st==="red"?"var(--status-red-bg)":st==="orange"?"var(--status-ylw-bg)":st==="ok"?"var(--status-grn-bg)":"var(--brand-surface)";
