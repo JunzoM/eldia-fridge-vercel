@@ -413,7 +413,7 @@ function App(){
       ),
       h("div",{style:{background:isOnline?"#22c55e":"var(--brand-red)",color:"#fff",fontSize:10,fontWeight:700,textAlign:"center",padding:"3px 0",letterSpacing:"0.05em",position:"sticky",top:44,zIndex:99}},isOnline?"● オンライン":"● オフライン"),
       h("div",{style:{paddingBottom:96}},contentViews),
-      h("nav",{className:"bot-nav",style:{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:appW,background:"var(--brand-surface)",borderTop:"1px solid var(--brand-border)",display:"flex",alignItems:"flex-end",justifyContent:"space-around",padding:"2px 4px 6px",zIndex:100}},
+      h("nav",{className:"bot-nav",style:{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:appW,background:"var(--brand-surface)",borderTop:"1px solid var(--brand-border)",display:"flex",alignItems:"flex-end",justifyContent:"space-around",padding:"0px 4px 4px",zIndex:100}},
         h("button",{onClick:function(){setView("alerts");},style:{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",cursor:"pointer",position:"relative",paddingBottom:2}},
           h("span",{style:{color:view==="alerts"?"var(--brand-accent)":"var(--brand-muted)"}},Ico("alert",22)),
           alerts.length>0&&h("div",{style:{position:"absolute",top:-2,right:"50%",marginRight:-14,background:"var(--brand-red)",color:"#fff",borderRadius:10,padding:"1px 5px",fontSize:9,fontWeight:700}},alerts.length),
