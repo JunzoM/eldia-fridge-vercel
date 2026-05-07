@@ -250,6 +250,8 @@ function App(){
     window.addEventListener("online",goOn);window.addEventListener("offline",goOff);
     return function(){window.removeEventListener("online",goOn);window.removeEventListener("offline",goOff);};
   },[]);
+
+  useEffect(function(){
     if(!pinOk)return;
     var pq=loadP().filter(function(it){return it.st===store;});
     if(pq.length>0){
