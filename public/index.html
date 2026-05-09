@@ -267,8 +267,8 @@ function App(){
     }
     sbLoad(function(ok,nd,remData){
       setLoading(false);
-      if(ok&&nd&&!editedRef.current){saveD(nd);setData(nd);}
-      if(ok&&remData&&!editedRef.current){saveR(remData);setRem(remData);}
+      if(ok&&nd&&!editedRef.current&&!localStorage.getItem(LS)){saveD(nd);setData(nd);}
+      if(ok&&remData&&!editedRef.current&&!localStorage.getItem(LR)){saveR(remData);setRem(remData);}
       if(ok)shT(L.syncOk);
     });
   },[pinOk]);
