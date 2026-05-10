@@ -159,30 +159,36 @@ function saveND(d){try{localStorage.setItem(ND,JSON.stringify(d));}catch(e){}}
 var LP="eldia_pv1";
 function loadP(){try{return JSON.parse(localStorage.getItem(LP)||"[]");}catch(e){return[];}}
 function saveP(q){try{localStorage.setItem(LP,JSON.stringify(q));}catch(e){}}
-function addP(st,rn,idx,nm,exp){var q=loadP();var found=false;q=q.map(function(it){if(it.st===st&&it.rn===rn&&it.idx===idx){found=true;return{st:st,rn:rn,idx:idx,nm:nm,exp:exp};}return it;});if(!found)q.push({st:st,rn:rn,idx:idx,nm:nm,exp:exp});saveP(q);}
+function addP(st,rn,idx,nm,exp){var q=loadP();var found=false;var ts=Date.now();q=q.map(function(it){if(it.st===st&&it.rn===rn&&it.idx===idx){found=true;return{st:st,rn:rn,idx:idx,nm:nm,exp:exp,ts:ts};}return it;});if(!found)q.push({st:st,rn:rn,idx:idx,nm:nm,exp:exp,ts:ts});saveP(q);}
 function rmP(st,rn,idx){saveP(loadP().filter(function(it){return!(it.st===st&&it.rn===rn&&it.idx===idx);}));}
 function hasPendingForStore(st){return loadP().some(function(it){return it.st===st;});}
 
 function sbLoad(cb){
-  if(!SB_URL){cb(false,null,null);return;}
+  if(!SB_URL){cb(false,null,null,null);return;}
   Promise.all([
-    fetch(SB_URL+"/rest/v1/fridge_items?select=*",{headers:sbH()}).then(function(r){return r.json();}),
-    fetch(SB_URL+"/rest/v1/fridge_removed?select=key",{headers:sbH()}).then(function(r){return r.json();})
+    fetch(SB_URL+"/rest/v1/fridge_items?select=*",{headers:sbH(),cache:"no-store"}).then(function(r){return r.json();}),
+    fetch(SB_URL+"/rest/v1/fridge_removed?select=key",{headers:sbH(),cache:"no-store"}).then(function(r){return r.json();})
   ]).then(function(res){
     var items=res[0],remRows=res[1];
     var nd=null;
+    var srvTs={};
     if(Array.isArray(items)&&items.length){
       nd=initD();
       items.forEach(function(it){
         if(!nd[it.room_no])return;
         var i2=Number(it.slot_idx);
-        if(nd[it.room_no][i2]){var raw=it.expiry_date||"";var d2=raw&&pD(raw);nd[it.room_no][i2].exp=d2?iso(d2):raw;nd[it.room_no][i2].name=(it.name!=null)?it.name:"";}
+        if(nd[it.room_no][i2]){
+          var raw=it.expiry_date||"";var d2=raw&&pD(raw);
+          nd[it.room_no][i2].exp=d2?iso(d2):raw;
+          nd[it.room_no][i2].name=(it.name!=null)?it.name:"";
+          if(it.updated_at){var ts=Date.parse(it.updated_at);if(!isNaN(ts)){if(!srvTs[it.room_no])srvTs[it.room_no]={};srvTs[it.room_no][i2]=ts;}}
+        }
       });
     }
     var remData=null;
     if(Array.isArray(remRows)){remData={};remRows.forEach(function(r){remData[r.key]=true;});}
-    cb(true,nd,remData);
-  }).catch(function(){cb(false,null,null);});
+    cb(true,nd,remData,srvTs);
+  }).catch(function(){cb(false,null,null,null);});
 }
 
 function sbSave(rn,idx,nm,exp,onOk,onErr){
@@ -192,7 +198,7 @@ function sbSave(rn,idx,nm,exp,onOk,onErr){
     headers:Object.assign({"Prefer":"resolution=merge-duplicates,return=minimal"},sbH()),
     body:JSON.stringify({room_no:String(rn),slot_idx:idx,name:nm||"",expiry_date:exp||"",updated_at:new Date().toISOString()})
   }).then(function(r){
-    if(r.status===200||r.status===201||r.status===204){if(onOk)onOk();}
+    if(r.status===200||r.status===201||r.status===204){rmP(getStore(),rn,idx);if(onOk)onOk();}
     else{r.text().then(function(t){console.error("sbSave err",r.status,t);if(onErr)onErr(r.status);});}
   }).catch(function(e){console.error("sbSave fetch err",e);if(onErr)onErr(0);});
 }
@@ -261,28 +267,33 @@ function App(){
 
   useEffect(function(){
     if(!pinOk)return;
-    function applyServer(ok,nd,remData){
+    function applyServer(ok,nd,remData,srvTs){
       setLoading(false);
       if(!ok)return;
       if(nd){
-        var pq2=loadP().filter(function(it){return it.st===store;});
-        pq2.forEach(function(it){var s=nd[it.rn]&&nd[it.rn][Number(it.idx)];if(s&&s.name===(it.nm||"")&&(s.exp||"")===(it.exp||"")){rmP(store,it.rn,it.idx);}});
-        var unconf=loadP().filter(function(it){return it.st===store;});
+        var pending=loadP().filter(function(it){return it.st===store;});
         var ld=loadD();
-        unconf.forEach(function(it){if(nd[it.rn]&&ld[it.rn]&&ld[it.rn][Number(it.idx)]){nd[it.rn]=nd[it.rn].slice();nd[it.rn][Number(it.idx)]=ld[it.rn][Number(it.idx)];}});
+        var toPush=[];
+        pending.forEach(function(it){
+          var i2=Number(it.idx);
+          var s=nd[it.rn]&&nd[it.rn][i2];
+          if(s&&s.name===(it.nm||"")&&(s.exp||"")===(it.exp||"")){rmP(store,it.rn,it.idx);return;}
+          var sTs=(srvTs&&srvTs[it.rn]&&srvTs[it.rn][i2])||0;
+          var pTs=it.ts||0;
+          if(pTs>sTs){
+            if(nd[it.rn]&&ld[it.rn]&&ld[it.rn][i2]){nd[it.rn]=nd[it.rn].slice();nd[it.rn][i2]=ld[it.rn][i2];}
+            toPush.push(it);
+          }else{
+            rmP(store,it.rn,it.idx);
+          }
+        });
         saveD(nd);setData(nd);
+        toPush.forEach(function(it){sbSave(it.rn,it.idx,it.nm,it.exp,function(){},function(){});});
       }
       if(remData){saveR(remData);setRem(remData);}
       shT(L.syncOk);
     }
-    var pq=loadP().filter(function(it){return it.st===store;});
-    if(pq.length>0){
-      var done=0;
-      function checkDone(){done++;if(done===pq.length)sbLoad(applyServer);}
-      pq.forEach(function(it){sbSave(it.rn,it.idx,it.nm,it.exp,function(){checkDone();},function(){checkDone();});});
-    }else{
-      sbLoad(applyServer);
-    }
+    sbLoad(applyServer);
   },[pinOk]);
 
   var W=useWidth();
