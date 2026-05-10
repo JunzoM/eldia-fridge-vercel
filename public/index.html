@@ -130,7 +130,7 @@ var NAMES=["コカ・コーラ","角ハイボール","伊右衛門","烏龍茶",
 var NAMES_LIST=["コカ・コーラ","角ハイボール","伊右衛門","烏龍茶","午後の紅茶","ポカリスウェット","クリスタルガイザー","Red Bull","キリン一番搾り","アサヒスーパードライ","のどごし生","氷結レモン","パワフルゴールド","ストロングD","ダース ミルク","フリースペース①","フリースペース②"];
 var L={hotel: "HOTEL ELDIA 神戸 モダン",fridge: "冷蔵庫 棚卸管理",check: "冷蔵庫 棚卸チェック",nextEx: "次回月末交換",tapHint: "マスをタップしてメニューを開く",retr: "取り出し中",tapRet: "タップして「元の場所に戻した」を選択",retHere: "ここに戻す",needSw: "要交換",monSw: "月末交換",sell: "販売中",noIn: "未入力",immSw: "要即交換",dOv: "日超過",tod: "本日期限",aLft: "あと",days: "日",norm: "正常",updExp: "期限を更新する",chItem: "品目を変更・削除する",retring: "取り出し中にする",retd: "元の場所に戻した",canc: "キャンセル",upded: "消費期限を更新しました",itCh: "品目を変更しました",itDel: "品目を削除しました",retMsg: "取り出し中にしました",retdMsg: "元の位置に戻しました",noExp: "未設定",noHist: "履歴がありません",noAlert: "問題ありません",qSel: "クイック選択",dInput: "日付を直接入力",tMo: "今月末",nMo: "来月末",in3: "3ヶ月後",in6: "6ヶ月後",selDt: "日付を選択してください",itNm: "品目名",entIt: "品目名を入力（空欄で削除）",scope: "適用範囲",thisR: "この部屋のみ",allR: "全室に適用",allRN: "全部屋の",slotCh: "スロットを変更します",delW: "⚠ 空欄にすると品目が削除されます",appAll: "全室に変更を適用する",appThis: "この部屋に変更を適用する",delThis: "この品目を削除する",chDesc: "品目を変更・削除します",gasLbl: "SUPABASE 接続状態",lblG: "スロット番号ラベルの貼り方",lblD: "冷蔵庫の各スロット枠に A1〜D4 のシールを貼ると、取り出した商品の返却場所が一目でわかります。",colL: "横列： 1・2・3・4（左から）",rowL: "縦行： A（上段）→ B → C → D（下段）",nSwBig: "⚠ 要即交換（今月末以前）",mSwBig: "📅 月末交換対象（来月末まで）",rmTo: "部屋へ →",outCnt: "本取出中",live: "●SB",local: "LOCAL",roomSuf: "号室",flrLbl: "フロア",altLbl: "アラート",hiLbl: "履歴",setLbl: "設定",restockLbl: "補充リスト",pinTitle: "PIN入力",pinHint: "4桁のPINを入力してください",pinWrong: "PINが違います",loading: "データ読み込み中...",syncOk: "同期完了",syncErr: "同期エラー",storeM: "モダン",storeL: "ラグジュアリー",noUse:"未使用",setBO:"BO設定",boSet:"ブラックアウトに設定しました",boClr:"ブラックアウトを解除しました",selMode:"選択削除",selAll:"全選択",deselAll:"全解除",confDel:"マスを削除",bulkDelMsg:"マスを削除しました",delAll:"全削除",};
 
-var LS="elv7",LH="elhv7",LR="elrv7";var APP_VER="2026.05.10.1";var ST_KEY="eldia_store";function getStore(){return localStorage.getItem(ST_KEY)||"M";}function setStore(s){localStorage.setItem(ST_KEY,s);FLOORS=s==="L"?FLOORS_L:FLOORS_M;ALL=FLOORS.reduce(function(a,f){return a.concat(f.rooms);;},[]);}setStore(getStore());
+var LS="elv7",LH="elhv7",LR="elrv7";var APP_VER="2026.05.10.2";var ST_KEY="eldia_store";function getStore(){return localStorage.getItem(ST_KEY)||"M";}function setStore(s){localStorage.setItem(ST_KEY,s);FLOORS=s==="L"?FLOORS_L:FLOORS_M;ALL=FLOORS.reduce(function(a,f){return a.concat(f.rooms);;},[]);}setStore(getStore());
 var SB_URL=window.__SB_URL__||"";
 var SB_KEY=window.__SB_KEY__||"";
 function sbH(){return{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY};}
@@ -779,6 +779,37 @@ function HV(p){
   }));
 }
 
+function countFilledLocal(){
+  var d=loadD(),n=0;
+  Object.keys(d).forEach(function(rn){(d[rn]||[]).forEach(function(s){if(s&&(s.exp||"").length>0)n++;});});
+  return n;
+}
+function pushAllLocalToSb(onProgress,onDone){
+  if(!SB_URL){onDone&&onDone(0,0,0);return;}
+  var d=loadD();
+  var items=[];
+  Object.keys(d).forEach(function(rn){
+    (d[rn]||[]).forEach(function(slot,idx){
+      items.push({rn:rn,idx:idx,nm:(slot&&slot.name)||"",exp:(slot&&slot.exp)||""});
+    });
+  });
+  var total=items.length,ok=0,err=0,i=0;
+  if(!total){onDone&&onDone(0,0,0);return;}
+  function step(){
+    if(i>=total){onDone&&onDone(total,ok,err);return;}
+    var it=items[i++];
+    if(!SB_URL){err++;onProgress&&onProgress(i,total);step();return;}
+    fetch(SB_URL+"/rest/v1/fridge_items?on_conflict=room_no,slot_idx",{
+      method:"POST",
+      headers:Object.assign({"Prefer":"resolution=merge-duplicates,return=minimal"},sbH()),
+      body:JSON.stringify({room_no:String(it.rn),slot_idx:it.idx,name:it.nm||"",expiry_date:it.exp||"",updated_at:new Date().toISOString()})
+    }).then(function(r){
+      if(r.status===200||r.status===201||r.status===204){ok++;rmP(getStore(),it.rn,it.idx);}else{err++;}
+      onProgress&&onProgress(i,total);step();
+    }).catch(function(){err++;onProgress&&onProgress(i,total);step();});
+  }
+  step();
+}
 function forceRefreshApp(){
   if(!confirm("キャッシュをクリアして最新版を取得します。\n（ローカル保存データは保持されます）\n\n実行しますか？"))return;
   var p=Promise.resolve();
@@ -796,6 +827,22 @@ function forceRefreshApp(){
 }
 function SV(p){
   var ok=!!SB_URL;
+  var sps=useState({running:false,done:0,total:0,ok:0,err:0});var pst=sps[0],setPst=sps[1];
+  var locCnt=countFilledLocal();
+  var pendCnt=loadP().filter(function(it){return it.st===getStore();}).length;
+  function doPush(){
+    if(!confirm("⚠ 重要な警告\n\nこのデバイス("+(getStore()==="M"?"モダン":"ラグジュアリー")+"店舗)の全データを Supabase に上書き保存します。\n\n他のデバイスで行われた新しい変更があった場合、それらは上書きされて失われる可能性があります。\n\n【このデバイスが本当に最新】であることを確認した上で実行してください。\n\n続行しますか？"))return;
+    setPst({running:true,done:0,total:0,ok:0,err:0});
+    pushAllLocalToSb(
+      function(done,total){setPst({running:true,done:done,total:total,ok:0,err:0});},
+      function(total,okN,errN){
+        setPst({running:false,done:total,total:total,ok:okN,err:errN});
+        alert(errN>0
+          ?("送信完了\n成功: "+okN+"件\n失敗: "+errN+"件\n合計: "+total+"件")
+          :("✅ 送信完了\n"+okN+"件のデータをSupabaseに保存しました。\n\n他のデバイスを開き直すと最新データが表示されます。"));
+      }
+    );
+  }
   return h("div",{style:{padding:16}},
     h("div",{style:{background:"var(--brand-surface)",borderRadius:14,padding:16,marginBottom:16,border:"1px solid var(--brand-border)",display:"flex",alignItems:"center",justifyContent:"space-between"}},
       h("span",{style:{fontSize:13,fontWeight:700,color:"var(--brand-text)"}},p.darkMode?"ダークモード":"ライトモード"),
@@ -805,6 +852,19 @@ function SV(p){
       h("div",{style:{fontSize:12,color:"var(--brand-muted)",fontWeight:700,marginBottom:12}},L.gasLbl),
       h("div",{style:{padding:14,borderRadius:10,background:ok?"var(--status-grn-bg)":"var(--status-ylw-bg)",border:"1.5px solid "+(ok?"var(--brand-green)":"var(--brand-yellow)"),fontSize:13,fontWeight:700,color:ok?"var(--brand-green)":"var(--brand-yellow)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}},Ico(ok?"check":"alert",16),ok?"Supabase接続済":"Supabase未設定"),
       ok&&h("div",{style:{marginTop:8,fontSize:10,color:"var(--brand-muted)",textAlign:"center"}},SB_URL.replace("https://","")),
+    ),
+    h("div",{style:{background:"var(--brand-surface)",borderRadius:14,padding:16,marginBottom:16,border:"1px solid var(--brand-border)"}},
+      h("div",{style:{fontSize:12,color:"var(--brand-muted)",fontWeight:700,marginBottom:10}},"このデバイスのローカルデータ"),
+      h("div",{style:{display:"flex",justifyContent:"space-between",fontSize:13,color:"var(--brand-text)",marginBottom:6}},h("span",null,"店舗"),h("span",{style:{fontWeight:700}},getStore()==="M"?"モダン":"ラグジュアリー")),
+      h("div",{style:{display:"flex",justifyContent:"space-between",fontSize:13,color:"var(--brand-text)",marginBottom:6}},h("span",null,"期限入力済スロット"),h("span",{style:{fontWeight:700}},locCnt+"件")),
+      h("div",{style:{display:"flex",justifyContent:"space-between",fontSize:13,color:"var(--brand-text)"}},h("span",null,"未送信(pending)"),h("span",{style:{fontWeight:700,color:pendCnt>0?"var(--brand-yellow)":"var(--brand-muted)"}},pendCnt+"件"))
+    ),
+    h("div",{style:{background:"var(--status-red-bg)",borderRadius:14,padding:16,marginBottom:16,border:"1.5px solid var(--brand-red)"}},
+      h("div",{style:{fontSize:12,color:"var(--brand-red)",fontWeight:700,marginBottom:8}},"⚠ 強制送信（他デバイスのデータを上書きする可能性あり）"),
+      h("div",{style:{fontSize:11,color:"var(--brand-text)",lineHeight:1.6,marginBottom:12}},"このデバイスが最新であることが確実な場合のみ使用してください。このデバイスのローカルデータを Supabase に強制アップロードします。他デバイスで行われた新しい変更は上書きされます。"),
+      pst.running
+        ? h("div",{style:{padding:"12px 16px",background:"var(--brand-surface)",borderRadius:10,fontSize:12,color:"var(--brand-text)",textAlign:"center"}},"送信中... "+pst.done+" / "+(pst.total||"?"))
+        : h("button",{onClick:doPush,disabled:!ok,style:{background:ok?"var(--brand-red)":"var(--brand-surface2)",border:"none",borderRadius:10,padding:"12px 16px",fontSize:13,fontWeight:700,color:"#fff",width:"100%",cursor:ok?"pointer":"not-allowed",display:"flex",alignItems:"center",justifyContent:"center",gap:8,opacity:ok?1:0.5}},Ico("upload",16),"このデバイスのデータを Supabase へ強制送信")
     ),
     h("div",{style:{background:"var(--brand-surface)",borderRadius:14,padding:16,marginBottom:16,border:"1px solid var(--brand-border)"}},
       h("div",{style:{fontSize:12,color:"var(--brand-muted)",fontWeight:700,marginBottom:8}},"キャッシュ管理"),
