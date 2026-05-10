@@ -1,4 +1,4 @@
-var CACHE = "eldia-fridge-v8";
+var CACHE = "eldia-fridge-v9";
 var ASSETS = ["/"];
 
 self.addEventListener("install", function(e) {
@@ -16,10 +16,29 @@ self.addEventListener("activate", function(e) {
 self.addEventListener("fetch", function(e) {
   // config.jsとsupabase通信はキャッシュしない
   if(e.request.url.includes("config.js") || e.request.url.includes("supabase.co")) return;
-  e.respondWith(caches.match(e.request).then(function(r) {
-    return r || fetch(e.request).then(function(res) {
+
+  var req = e.request;
+  var isNav = req.mode === "navigate" || req.destination === "document";
+
+  if(isNav){
+    // HTMLはネットワークファースト（最新を常時取得、オフライン時のみキャッシュ）
+    e.respondWith(
+      fetch(req).then(function(res){
+        var rc = res.clone();
+        caches.open(CACHE).then(function(c){ c.put(req, rc); });
+        return res;
+      }).catch(function(){
+        return caches.match(req).then(function(r){ return r || caches.match("/"); });
+      })
+    );
+    return;
+  }
+
+  // 静的アセットはキャッシュファースト
+  e.respondWith(caches.match(req).then(function(r) {
+    return r || fetch(req).then(function(res) {
       var rc = res.clone();
-      caches.open(CACHE).then(function(c) { c.put(e.request, rc); });
+      caches.open(CACHE).then(function(c) { c.put(req, rc); });
       return res;
     }).catch(function() { return caches.match("/"); });
   }));
