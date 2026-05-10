@@ -594,26 +594,24 @@ function RV(p){
                 return h("button",{key:ci,
                   onClick:function(){selMode?togSel(idx):p.onTap(p.rn,idx);},
                   className:gone&&!selMode?"hatch":"",
-                  style:{background:selMode?(isSel?"var(--status-red-bg)":"var(--brand-surface)"):(gone?undefined:isEmpty?"var(--brand-bg)":"var(--brand-surface)"),borderRadius:6,border:selMode?(isSel?"2px solid var(--brand-red)":"1px dashed var(--brand-red)"):(gone?"2px dashed var(--brand-yellow)":isEmpty?"1px solid var(--brand-surface2)":"1px solid var(--brand-border)"),padding:0,overflow:"hidden",display:"flex",flexDirection:"column",boxShadow:gone||isEmpty?"none":"0 2px 4px rgba(0,0,0,.15)",animation:(!selMode&&isRd&&!gone)?"blink 1.4s infinite":"none",minHeight:90,cursor:"pointer",position:"relative"}},
+                  style:{background:selMode?(isSel?"var(--status-red-bg)":"var(--brand-surface)"):(gone?undefined:"var(--brand-surface)"),borderRadius:6,border:selMode?(isSel?"2px solid var(--brand-red)":"1px dashed var(--brand-red)"):(gone?"2px dashed var(--brand-yellow)":"1px solid var(--brand-border)"),padding:0,overflow:"hidden",display:"flex",flexDirection:"column",boxShadow:gone?"none":"0 2px 4px rgba(0,0,0,.15)",animation:(!selMode&&isRd&&!gone)?"blink 1.4s infinite":"none",minHeight:90,cursor:"pointer",position:"relative",opacity:isEmpty?0.35:1}},
                   selMode&&h("div",{style:{position:"absolute",top:3,left:3,width:14,height:14,borderRadius:3,background:isSel?"var(--brand-red)":"transparent",border:"1.5px solid "+(isSel?"var(--brand-red)":"var(--brand-muted)"),display:"flex",alignItems:"center",justifyContent:"center",zIndex:1,fontSize:10,color:"#fff",fontWeight:700,lineHeight:1}},isSel?"✓":""),
-                  h("div",{style:{background:gone&&!selMode?"var(--status-ylw-bg)":isEmpty?"var(--brand-bg)":"var(--brand-surface2)",padding:"3px 4px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid "+(gone&&!selMode?"var(--brand-yellow)":isEmpty?"var(--brand-surface2)":"var(--brand-border)")}},
-                    h("span",{style:{fontSize:7,color:gone&&!selMode?"var(--brand-yellow)":isEmpty?"var(--brand-surface2)":"var(--brand-muted)",fontWeight:700}},gone&&!selMode?L.retr:isRd?L.needSw:isOr?L.monSw:st==="ok"?L.sell:L.noIn),
+                  h("div",{style:{background:gone&&!selMode?"var(--status-ylw-bg)":"var(--brand-surface2)",padding:"3px 4px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid "+(gone&&!selMode?"var(--brand-yellow)":"var(--brand-border)")}},
+                    h("span",{style:{fontSize:7,color:gone&&!selMode?"var(--brand-yellow)":"var(--brand-muted)",fontWeight:700}},gone&&!selMode?L.retr:isRd?L.needSw:isOr?L.monSw:st==="ok"?L.sell:L.noIn),
                     h("div",{style:{display:"flex",alignItems:"center",gap:3}},
-                      h("span",{style:{fontSize:8,fontWeight:700,color:gone&&!selMode?"var(--brand-yellow)":isEmpty?"var(--brand-surface2)":"var(--brand-muted)",background:gone&&!selMode?"var(--status-ylw-bg)":isEmpty?"var(--brand-bg)":"var(--brand-surface)",borderRadius:3,padding:"1px 3px",fontFamily:"'JetBrains Mono',monospace"}},sL(idx)),
-                      !selMode&&!isEmpty&&h("div",{style:{width:7,height:7,borderRadius:"50%",background:lamp,boxShadow:glow,flexShrink:0}})
+                      h("span",{style:{fontSize:8,fontWeight:700,color:gone&&!selMode?"var(--brand-yellow)":"var(--brand-muted)",background:gone&&!selMode?"var(--status-ylw-bg)":"var(--brand-surface)",borderRadius:3,padding:"1px 3px",fontFamily:"'JetBrains Mono',monospace"}},sL(idx)),
+                      !selMode&&h("div",{style:{width:7,height:7,borderRadius:"50%",background:lamp,boxShadow:glow,flexShrink:0}})
                     )
                   ),
-                  h("div",{style:{flex:1,background:gone&&!selMode?"transparent":isEmpty?"var(--brand-bg)":"rgba(0,0,0,0.04)",display:"flex",alignItems:"center",justifyContent:"center",padding:"5px 3px"}},
+                  h("div",{style:{flex:1,background:gone&&!selMode?"transparent":"rgba(0,0,0,0.04)",display:"flex",alignItems:"center",justifyContent:"center",padding:"5px 3px"}},
                     gone&&!selMode?h("div",{style:{width:"100%",minHeight:44,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3}},
                       h("div",{style:{opacity:.4,color:"var(--brand-muted)"}},Ico("inbox",20)),
                       h("span",{style:{fontSize:8,color:"var(--brand-yellow)",fontWeight:700,textAlign:"center",lineHeight:1.3}},slot.name))
-                    :isEmpty?h("div",{style:{width:"100%",minHeight:44,background:"var(--brand-bg)"}})
                     :h("div",{style:{background:"var(--brand-surface)",borderRadius:4,padding:"5px 3px",width:"100%",minHeight:44,display:"flex",alignItems:"center",justifyContent:"center",border:"1px solid var(--brand-border)"}},
                       h("span",{style:{fontSize:slot.name?9:8,fontWeight:700,color:slot.name?"var(--brand-text)":"var(--brand-muted)",textAlign:"center",lineHeight:1.3,wordBreak:"keep-all"}},slot.name||""))
                   ),
-                  !selMode&&h("div",{style:{background:isEmpty?"var(--brand-bg)":"var(--brand-surface2)",padding:"5px 3px",textAlign:"center",borderTop:"1px solid "+(isEmpty?"var(--brand-surface2)":"var(--brand-border)")}},
+                  !selMode&&h("div",{style:{background:"var(--brand-surface2)",padding:"5px 3px",textAlign:"center",borderTop:"1px solid var(--brand-border)"}},
                     gone?h("div",{style:{fontSize:8,color:"var(--brand-yellow)",fontWeight:700}},L.retHere)
-                    :isEmpty?h("div",{style:{fontSize:10,color:"var(--brand-surface2)"}},"——")
                     :slot.exp?[h("div",{key:"d",style:{fontSize:14,fontWeight:700,color:isRd?"var(--brand-red)":isOr?"var(--brand-yellow)":st==="ok"?"var(--brand-green)":"var(--brand-muted)",lineHeight:1,fontFamily:"'JetBrains Mono',monospace"}},fmt(slot.exp)),dl2!==null&&h("div",{key:"l",style:{fontSize:7,color:"var(--brand-muted)",marginTop:1}},dl2<0?Math.abs(dl2)+L.dOv:dl2===0?L.tod:L.aLft+dl2+L.days)]
                     :h("div",{style:{fontSize:10,color:"var(--brand-muted)"}},"——")
                   )
@@ -871,9 +869,8 @@ function DM(p){
           h("select",{value:mStr,onChange:function(e){setM(e.target.value);},style:{flex:1,border:"2px solid "+(invalid?"var(--brand-red)":"var(--brand-border)"),borderRadius:10,padding:"10px 2px",fontSize:14,color:mStr?"var(--brand-text)":"var(--brand-muted)",background:"var(--brand-surface2)",fontWeight:700,textAlign:"center",width:0}},
             h("option",{value:""},"月"),
             [1,2,3,4,5,6,7,8,9,10,11,12].map(function(m){return h("option",{key:m,value:String(m).padStart(2,"0")},m+"月");})),
-          h("select",{value:dStr,onChange:function(e){setD(e.target.value);},style:{flex:1,border:"2px solid "+(invalid?"var(--brand-red)":"var(--brand-border)"),borderRadius:10,padding:"10px 2px",fontSize:14,color:dStr?"var(--brand-text)":"var(--brand-muted)",background:"var(--brand-surface2)",fontWeight:700,textAlign:"center",width:0}},
-            h("option",{value:""},"日"),
-            Array.from({length:31},function(_,i){var d=i+1;return h("option",{key:d,value:String(d).padStart(2,"0")},d+"日");})),
+          h("input",{type:"text",inputMode:"numeric",pattern:"[0-9]*",placeholder:"DD",value:dStr,maxLength:2,onChange:function(e){setD(String(e.target.value).replace(/\D/g,"").slice(0,2));},style:{flex:1,border:"2px solid "+(invalid?"var(--brand-red)":"var(--brand-border)"),borderRadius:10,padding:"10px 4px",fontSize:17,color:"var(--brand-text)",background:"var(--brand-surface2)",fontWeight:700,textAlign:"center",width:0}}),
+          h("span",{style:{fontSize:14,color:"var(--brand-muted)",fontWeight:700,flexShrink:0}},"日"),
           h("input",{type:"date",value:val||"",onChange:function(e){if(e.target.value)pick(e.target.value);},style:{position:"absolute",opacity:0,width:0,height:0,pointerEvents:"none"},id:"dm-cal"}),
           h("label",{htmlFor:"dm-cal",style:{flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",width:42,height:42,borderRadius:10,border:"1px solid var(--brand-border)",background:"var(--brand-surface2)",cursor:"pointer",color:"var(--brand-muted)"}},Ico("calendar",18))
         ),
