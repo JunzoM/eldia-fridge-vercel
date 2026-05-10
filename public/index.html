@@ -128,7 +128,7 @@ var ROWS=["A","B","C","D"];
 var DAYS=["日","月","火","水","木","金","土"];
 var NAMES=["コカ・コーラ","角ハイボール","伊右衛門","烏龍茶","午後の紅茶","ポカリスウェット","クリスタルガイザー","Red Bull","キリン一番搾り","アサヒスーパードライ","のどごし生","氷結レモン","パワフルゴールド","ダース ミルク","フリースペース①","フリースペース②"];
 var NAMES_LIST=["コカ・コーラ","角ハイボール","伊右衛門","烏龍茶","午後の紅茶","ポカリスウェット","クリスタルガイザー","Red Bull","キリン一番搾り","アサヒスーパードライ","のどごし生","氷結レモン","パワフルゴールド","ストロングD","ダース ミルク","フリースペース①","フリースペース②"];
-var L={hotel: "HOTEL ELDIA 神戸 モダン",fridge: "冷蔵庫 棚卸管理",check: "冷蔵庫 棚卸チェック",nextEx: "次回月末交換",tapHint: "マスをタップしてメニューを開く",retr: "取り出し中",tapRet: "タップして「元の場所に戻した」を選択",retHere: "ここに戻す",needSw: "要交換",monSw: "月末交換",sell: "販売中",noIn: "未入力",immSw: "要即交換",dOv: "日超過",tod: "本日期限",aLft: "あと",days: "日",norm: "正常",updExp: "期限を更新する",chItem: "品目を変更・削除する",retring: "取り出し中にする",retd: "元の場所に戻した",canc: "キャンセル",upded: "消費期限を更新しました",itCh: "品目を変更しました",itDel: "品目を削除しました",retMsg: "取り出し中にしました",retdMsg: "元の位置に戻しました",noExp: "未設定",noHist: "履歴がありません",noAlert: "問題ありません",qSel: "クイック選択",dInput: "日付を直接入力",tMo: "今月末",nMo: "来月末",in3: "3ヶ月後",in6: "6ヶ月後",selDt: "日付を選択してください",itNm: "品目名",entIt: "品目名を入力（空欄で削除）",scope: "適用範囲",thisR: "この部屋のみ",allR: "全室に適用",allRN: "全部屋の",slotCh: "スロットを変更します",delW: "⚠ 空欄にすると品目が削除されます",appAll: "全室に変更を適用する",appThis: "この部屋に変更を適用する",delThis: "この品目を削除する",chDesc: "品目を変更・削除します",gasLbl: "SUPABASE 接続状態",lblG: "スロット番号ラベルの貼り方",lblD: "冷蔵庫の各スロット枠に A1〜D4 のシールを貼ると、取り出した商品の返却場所が一目でわかります。",colL: "横列： 1・2・3・4（左から）",rowL: "縦行： A（上段）→ B → C → D（下段）",nSwBig: "⚠ 要即交換（今月末以前）",mSwBig: "📅 月末交換対象（来月末まで）",rmTo: "部屋へ →",outCnt: "本取出中",live: "●SB",local: "LOCAL",roomSuf: "号室",flrLbl: "フロア",altLbl: "アラート",hiLbl: "履歴",setLbl: "設定",restockLbl: "補充リスト",pinTitle: "PIN入力",pinHint: "4桁のPINを入力してください",pinWrong: "PINが違います",loading: "データ読み込み中...",syncOk: "同期完了",syncErr: "同期エラー",storeM: "モダン",storeL: "ラグジュアリー",noUse:"未使用",setBO:"BO設定",boSet:"ブラックアウトに設定しました",boClr:"ブラックアウトを解除しました",selMode:"選択削除",selAll:"全選択",deselAll:"全解除",confDel:"マスを削除",bulkDelMsg:"マスを削除しました",delAll:"全削除",sbForceSync:"ローカルをSupabaseへ送信",sbSyncDone:"Supabaseへ送信しました"};
+var L={hotel: "HOTEL ELDIA 神戸 モダン",fridge: "冷蔵庫 棚卸管理",check: "冷蔵庫 棚卸チェック",nextEx: "次回月末交換",tapHint: "マスをタップしてメニューを開く",retr: "取り出し中",tapRet: "タップして「元の場所に戻した」を選択",retHere: "ここに戻す",needSw: "要交換",monSw: "月末交換",sell: "販売中",noIn: "未入力",immSw: "要即交換",dOv: "日超過",tod: "本日期限",aLft: "あと",days: "日",norm: "正常",updExp: "期限を更新する",chItem: "品目を変更・削除する",retring: "取り出し中にする",retd: "元の場所に戻した",canc: "キャンセル",upded: "消費期限を更新しました",itCh: "品目を変更しました",itDel: "品目を削除しました",retMsg: "取り出し中にしました",retdMsg: "元の位置に戻しました",noExp: "未設定",noHist: "履歴がありません",noAlert: "問題ありません",qSel: "クイック選択",dInput: "日付を直接入力",tMo: "今月末",nMo: "来月末",in3: "3ヶ月後",in6: "6ヶ月後",selDt: "日付を選択してください",itNm: "品目名",entIt: "品目名を入力（空欄で削除）",scope: "適用範囲",thisR: "この部屋のみ",allR: "全室に適用",allRN: "全部屋の",slotCh: "スロットを変更します",delW: "⚠ 空欄にすると品目が削除されます",appAll: "全室に変更を適用する",appThis: "この部屋に変更を適用する",delThis: "この品目を削除する",chDesc: "品目を変更・削除します",gasLbl: "SUPABASE 接続状態",lblG: "スロット番号ラベルの貼り方",lblD: "冷蔵庫の各スロット枠に A1〜D4 のシールを貼ると、取り出した商品の返却場所が一目でわかります。",colL: "横列： 1・2・3・4（左から）",rowL: "縦行： A（上段）→ B → C → D（下段）",nSwBig: "⚠ 要即交換（今月末以前）",mSwBig: "📅 月末交換対象（来月末まで）",rmTo: "部屋へ →",outCnt: "本取出中",live: "●SB",local: "LOCAL",roomSuf: "号室",flrLbl: "フロア",altLbl: "アラート",hiLbl: "履歴",setLbl: "設定",restockLbl: "補充リスト",pinTitle: "PIN入力",pinHint: "4桁のPINを入力してください",pinWrong: "PINが違います",loading: "データ読み込み中...",syncOk: "同期完了",syncErr: "同期エラー",storeM: "モダン",storeL: "ラグジュアリー",noUse:"未使用",setBO:"BO設定",boSet:"ブラックアウトに設定しました",boClr:"ブラックアウトを解除しました",selMode:"選択削除",selAll:"全選択",deselAll:"全解除",confDel:"マスを削除",bulkDelMsg:"マスを削除しました",delAll:"全削除",sbForceSync:"ローカルをSupabaseへ送信",sbSyncDone:"Supabaseへ送信しました",sbSyncConfirm:"ローカルのデータでSupabaseを上書きします。\nSupabase側にしかない日付等が消える場合があります。\n続けますか？"};
 
 var LS="elv7",LH="elhv7",LR="elrv7";var ST_KEY="eldia_store";function getStore(){return localStorage.getItem(ST_KEY)||"M";}function setStore(s){localStorage.setItem(ST_KEY,s);FLOORS=s==="L"?FLOORS_L:FLOORS_M;ALL=FLOORS.reduce(function(a,f){return a.concat(f.rooms);;},[]);}setStore(getStore());
 var SB_URL=window.__SB_URL__||"";
@@ -260,16 +260,18 @@ function App(){
   useEffect(function(){
     if(!pinOk)return;
     var pq=loadP().filter(function(it){return it.st===store;});
-    if(pq.length>0){
-      editedRef.current=true;
-      pq.forEach(function(it){sbSave(it.rn,it.idx,it.nm,it.exp,function(){rmP(store,it.rn,it.idx);},function(){});});
-    }else{
-      editedRef.current=false;
-    }
+    pq.forEach(function(it){sbSave(it.rn,it.idx,it.nm,it.exp,function(){},function(){});});
     sbLoad(function(ok,nd,remData){
       setLoading(false);
-      if(ok&&nd&&!editedRef.current&&!localStorage.getItem(LS)){saveD(nd);setData(nd);}
-      if(ok&&remData&&!editedRef.current&&!localStorage.getItem(LR)){saveR(remData);setRem(remData);}
+      if(ok&&nd){
+        var pq2=loadP().filter(function(it){return it.st===store;});
+        pq2.forEach(function(it){var s=nd[it.rn]&&nd[it.rn][Number(it.idx)];if(s&&s.name===(it.nm||"")&&(s.exp||"")===(it.exp||"")){rmP(store,it.rn,it.idx);}});
+        var unconf=loadP().filter(function(it){return it.st===store;});
+        var ld=loadD();
+        unconf.forEach(function(it){if(nd[it.rn]&&ld[it.rn]&&ld[it.rn][Number(it.idx)]){nd[it.rn]=nd[it.rn].slice();nd[it.rn][Number(it.idx)]=ld[it.rn][Number(it.idx)];}});
+        saveD(nd);setData(nd);
+      }
+      if(ok&&remData){saveR(remData);setRem(remData);}
       if(ok)shT(L.syncOk);
     });
   },[pinOk]);
@@ -292,17 +294,18 @@ function App(){
   function pR(nr){setRem(nr);saveR(nr);}
   function shT(msg,t){setToast({msg:msg,t:t||"ok"});setTimeout(function(){setToast(null);},2200);}
   function forceSbSync(){
+    if(!window.confirm(L.sbSyncConfirm))return;
     var jobs=[];
     ALL.forEach(function(rn){(data[rn]||[]).forEach(function(sl,idx){jobs.push({rn:rn,idx:idx,nm:sl.name||"",exp:sl.exp||""});});});
     if(!jobs.length){shT("送信するデータがありません");return;}
     setLoading(true);
-    var done=0,failed=0;
-    jobs.forEach(function(j){sbSave(j.rn,j.idx,j.nm,j.exp,function(){done++;if(done+failed===jobs.length){setLoading(false);shT(failed?failed+"件失敗":L.sbSyncDone,failed?"err":"ok");}},function(){failed++;done++;if(done===jobs.length){setLoading(false);shT(failed+"件失敗","err");}});});
+    var done=0;
+    jobs.forEach(function(j){sbSave(j.rn,j.idx,j.nm,j.exp,function(){done++;if(done===jobs.length){setLoading(false);shT(L.sbSyncDone);}},function(){done++;if(done===jobs.length){setLoading(false);shT("一部送信失敗","err");}});});
   }
   function isRm(rn,i){return!!rem[rn+"-"+i];}
   function togR(rn,i){var k=rn+"-"+i;var nr=Object.assign({},rem);if(nr[k]){delete nr[k];sbDelRem(k);}else{nr[k]=true;sbSetRem(k);}pR(nr);}
   function togND(r){var nd=Object.assign({},noDrink);var was=!!nd[r];if(was)delete nd[r];else nd[r]=true;setNoDrink(nd);saveND(nd);shT(was?L.boClr:L.boSet);}
-  function bulkDelSlots(rn,idxList){editedRef.current=true;var nd=Object.assign({},data);nd[rn]=nd[rn].slice();idxList.forEach(function(idx){nd[rn][idx]=Object.assign({},nd[rn][idx],{name:"",exp:""});addP(store,rn,idx,"","");sbSave(rn,idx,"","",function(){rmP(store,rn,idx);},function(){});});persist(nd);shT(idxList.length+L.bulkDelMsg);}
+  function bulkDelSlots(rn,idxList){editedRef.current=true;var nd=Object.assign({},data);nd[rn]=nd[rn].slice();idxList.forEach(function(idx){nd[rn][idx]=Object.assign({},nd[rn][idx],{name:"",exp:""});addP(store,rn,idx,"","");sbSave(rn,idx,"","",function(){},function(){});});persist(nd);shT(idxList.length+L.bulkDelMsg);}
   function bulkRem(items){var nr=Object.assign({},rem);items.forEach(function(it){var k=it.rn+"-"+it.idx;if(!nr[k]){nr[k]=true;sbSetRem(k);}});pR(nr);shT("一括取り出し中にしました");}
   function rCnt(r){return(data[r]||[]).filter(function(_,i){return isRm(r,i);}).length;}
   var totR=ALL.reduce(function(a,r){return a+rCnt(r);},0);
@@ -314,12 +317,12 @@ function App(){
     var nd=Object.assign({},data);nd[rn]=data[rn].slice();nd[rn][idx]=Object.assign({},data[rn][idx],{exp:nd2});
     persist(nd);pushH({dt:new Date().toISOString(),rn:rn,name:nm,from:fr,to:nd2});setHist(loadH());
     addP(store,rn,idx,nm,nd2);
-    sbSave(rn,idx,nm,nd2,function(){rmP(store,rn,idx);shT(L.upded);},function(code){shT("SB保存失敗("+code+")","err");});
+    sbSave(rn,idx,nm,nd2,function(){shT(L.upded);},function(code){shT("SB保存失敗("+code+")","err");});
   }
   function upN(rn,idx,nn,all){
     editedRef.current=true;
     var nd=Object.assign({},data);var tg=all?ALL:[rn];
-    tg.forEach(function(r){nd[r]=(nd[r]||[]).slice();nd[r][idx]=Object.assign({},nd[r][idx],{name:nn,exp:""});addP(store,r,idx,nn,"");sbSave(r,idx,nn,"",function(){rmP(store,r,idx);},function(){});});
+    tg.forEach(function(r){nd[r]=(nd[r]||[]).slice();nd[r][idx]=Object.assign({},nd[r][idx],{name:nn,exp:""});addP(store,r,idx,nn,"");sbSave(r,idx,nn,"",function(){},function(){});});
     persist(nd);shT(nn?L.itCh:L.itDel);
   }
 
