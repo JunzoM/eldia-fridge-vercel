@@ -294,7 +294,7 @@ function App(){
   }
 
   function persist(nd){setData(nd);saveD(nd);}
-  function switchStore(s){var hp=hasPendingForStore(s);setStore(s);setStoreSt(s);setData(loadD());setRem(loadR());setView("floors");setRoom(null);sbLoad(function(ok,nd,remData){setLoading(false);if(ok&&nd&&!hp){saveD(nd);setData(nd);}else{setData(loadD());}if(ok&&remData&&!hp){saveR(remData);setRem(remData);}else{setRem(loadR());}});}
+  function switchStore(s){setStore(s);setStoreSt(s);setData(loadD());setRem(loadR());setView("floors");setRoom(null);setLoading(false);}
   function pR(nr){setRem(nr);saveR(nr);}
   function shT(msg,t){setToast({msg:msg,t:t||"ok"});setTimeout(function(){setToast(null);},2200);}
   function isRm(rn,i){return!!rem[rn+"-"+i];}
