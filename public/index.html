@@ -130,7 +130,7 @@ var NAMES=["コカ・コーラ","角ハイボール","伊右衛門","烏龍茶",
 var NAMES_LIST=["コカ・コーラ","角ハイボール","伊右衛門","烏龍茶","午後の紅茶","ポカリスウェット","クリスタルガイザー","Red Bull","キリン一番搾り","アサヒスーパードライ","のどごし生","氷結レモン","パワフルゴールド","ストロングD","ダース ミルク","フリースペース①","フリースペース②"];
 var L={hotel: "HOTEL ELDIA 神戸 モダン",fridge: "冷蔵庫 棚卸管理",check: "冷蔵庫 棚卸チェック",nextEx: "次回月末交換",tapHint: "マスをタップしてメニューを開く",retr: "取り出し中",tapRet: "タップして「元の場所に戻した」を選択",retHere: "ここに戻す",needSw: "要交換",monSw: "月末交換",sell: "販売中",noIn: "未入力",immSw: "要即交換",dOv: "日超過",tod: "本日期限",aLft: "あと",days: "日",norm: "正常",updExp: "期限を更新する",chItem: "品目を変更・削除する",retring: "取り出し中にする",retd: "元の場所に戻した",canc: "キャンセル",upded: "消費期限を更新しました",itCh: "品目を変更しました",itDel: "品目を削除しました",retMsg: "取り出し中にしました",retdMsg: "元の位置に戻しました",noExp: "未設定",noHist: "履歴がありません",noAlert: "問題ありません",qSel: "クイック選択",dInput: "日付を直接入力",tMo: "今月末",nMo: "来月末",in3: "3ヶ月後",in6: "6ヶ月後",selDt: "日付を選択してください",itNm: "品目名",entIt: "品目名を入力（空欄で削除）",scope: "適用範囲",thisR: "この部屋のみ",allR: "全室に適用",allRN: "全部屋の",slotCh: "スロットを変更します",delW: "⚠ 空欄にすると品目が削除されます",appAll: "全室に変更を適用する",appThis: "この部屋に変更を適用する",delThis: "この品目を削除する",chDesc: "品目を変更・削除します",gasLbl: "SUPABASE 接続状態",lblG: "スロット番号ラベルの貼り方",lblD: "冷蔵庫の各スロット枠に A1〜D4 のシールを貼ると、取り出した商品の返却場所が一目でわかります。",colL: "横列： 1・2・3・4（左から）",rowL: "縦行： A（上段）→ B → C → D（下段）",nSwBig: "⚠ 要即交換（今月末以前）",mSwBig: "📅 月末交換対象（来月末まで）",rmTo: "部屋へ →",outCnt: "本取出中",live: "●SB",local: "LOCAL",roomSuf: "号室",flrLbl: "フロア",altLbl: "アラート",hiLbl: "履歴",setLbl: "設定",restockLbl: "補充リスト",pinTitle: "PIN入力",pinHint: "4桁のPINを入力してください",pinWrong: "PINが違います",loading: "データ読み込み中...",syncOk: "同期完了",syncErr: "同期エラー",storeM: "モダン",storeL: "ラグジュアリー",noUse:"未使用",setBO:"BO設定",boSet:"ブラックアウトに設定しました",boClr:"ブラックアウトを解除しました",selMode:"選択削除",selAll:"全選択",deselAll:"全解除",confDel:"マスを削除",bulkDelMsg:"マスを削除しました",delAll:"全削除",};
 
-var LS="elv7",LH="elhv7",LR="elrv7";var APP_VER="2026.05.10.4";var ST_KEY="eldia_store";function getStore(){return localStorage.getItem(ST_KEY)||"M";}function setStore(s){localStorage.setItem(ST_KEY,s);FLOORS=s==="L"?FLOORS_L:FLOORS_M;ALL=FLOORS.reduce(function(a,f){return a.concat(f.rooms);;},[]);}setStore(getStore());
+var LS="elv7",LH="elhv7",LR="elrv7";var APP_VER="2026.05.10.5";var ST_KEY="eldia_store";function getStore(){return localStorage.getItem(ST_KEY)||"M";}function setStore(s){localStorage.setItem(ST_KEY,s);FLOORS=s==="L"?FLOORS_L:FLOORS_M;ALL=FLOORS.reduce(function(a,f){return a.concat(f.rooms);;},[]);}setStore(getStore());
 var SB_URL=window.__SB_URL__||"";
 var SB_KEY=window.__SB_KEY__||"";
 function sbH(){return{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY};}
@@ -164,12 +164,14 @@ function rmP(st,rn,idx){saveP(loadP().filter(function(it){return!(it.st===st&&it
 function hasPendingForStore(st){return loadP().some(function(it){return it.st===st;});}
 
 function sbLoad(cb){
-  if(!SB_URL){cb(false,null,null,null);return;}
+  if(!SB_URL){console.error("[sbLoad] SB_URL is empty, load skipped");cb(false,null,null,null);return;}
+  console.log("[sbLoad] GET fridge_items + fridge_removed");
   Promise.all([
     fetch(SB_URL+"/rest/v1/fridge_items?select=*",{headers:sbH(),cache:"no-store"}).then(function(r){return r.json();}),
     fetch(SB_URL+"/rest/v1/fridge_removed?select=key",{headers:sbH(),cache:"no-store"}).then(function(r){return r.json();})
   ]).then(function(res){
     var items=res[0],remRows=res[1];
+    console.log("[sbLoad] got",Array.isArray(items)?items.length:"?","items,",Array.isArray(remRows)?remRows.length:"?","removed");
     var nd=null;
     var srvTs={};
     if(Array.isArray(items)&&items.length){
@@ -188,19 +190,21 @@ function sbLoad(cb){
     var remData=null;
     if(Array.isArray(remRows)){remData={};remRows.forEach(function(r){remData[r.key]=true;});}
     cb(true,nd,remData,srvTs);
-  }).catch(function(){cb(false,null,null,null);});
+  }).catch(function(e){console.error("[sbLoad] fetch err",e);cb(false,null,null,null);});
 }
 
 function sbSave(rn,idx,nm,exp,onOk,onErr){
-  if(!SB_URL){if(onOk)onOk();return;}
+  if(!SB_URL){console.error("[sbSave] SB_URL is empty, save skipped",{rn:rn,idx:idx,nm:nm,exp:exp});if(onErr)onErr(-1);return;}
+  var body={room_no:String(rn),slot_idx:idx,name:nm||"",expiry_date:exp||"",updated_at:new Date().toISOString()};
+  console.log("[sbSave] POST",rn,idx,nm,exp);
   fetch(SB_URL+"/rest/v1/fridge_items?on_conflict=room_no,slot_idx",{
     method:"POST",
     headers:Object.assign({"Prefer":"resolution=merge-duplicates,return=minimal"},sbH()),
-    body:JSON.stringify({room_no:String(rn),slot_idx:idx,name:nm||"",expiry_date:exp||"",updated_at:new Date().toISOString()})
+    body:JSON.stringify(body)
   }).then(function(r){
-    if(r.status===200||r.status===201||r.status===204){rmP(getStore(),rn,idx);if(onOk)onOk();}
-    else{r.text().then(function(t){console.error("sbSave err",r.status,t);if(onErr)onErr(r.status);});}
-  }).catch(function(e){console.error("sbSave fetch err",e);if(onErr)onErr(0);});
+    if(r.status===200||r.status===201||r.status===204){console.log("[sbSave] ok",r.status,rn,idx);rmP(getStore(),rn,idx);if(onOk)onOk();}
+    else{r.text().then(function(t){console.error("[sbSave] err",r.status,t,body);if(onErr)onErr(r.status);});}
+  }).catch(function(e){console.error("[sbSave] fetch err",e,body);if(onErr)onErr(0);});
 }
 
 function sbSetRem(key){
@@ -401,7 +405,7 @@ function App(){
     loading&&h("div",{className:"spin",style:{width:12,height:12,border:"2px solid var(--brand-border)",borderTopColor:"var(--brand-accent)",borderRadius:"50%"}}),
     totR>0&&h("div",{style:{background:"var(--status-ylw-bg)",color:"var(--brand-yellow)",borderRadius:20,padding:"3px 10px",fontSize:11,fontWeight:700,border:"1px solid var(--brand-yellow)"}},totR+L.outCnt),
     alerts.length>0&&h("button",{onClick:function(){setView("alerts");},style:{background:hasRed?"var(--brand-red)":"var(--brand-yellow)",color:"var(--brand-bg)",borderRadius:20,padding:"4px 11px",fontSize:11,fontWeight:700,border:"none",cursor:"pointer",display:"flex",alignItems:"center",gap:4}},Ico("alert",13),alerts.length),
-    h("span",{style:{fontSize:10,padding:"3px 9px",borderRadius:20,background:SB_URL?"var(--status-grn-bg)":"var(--brand-surface2)",color:SB_URL?"var(--brand-green)":"var(--brand-muted)",border:"1px solid "+(SB_URL?"var(--brand-green)":"var(--brand-border)")}},SB_URL?L.live:L.local),
+    h("span",{style:{fontSize:10,fontWeight:700,padding:"3px 9px",borderRadius:20,background:SB_URL?"var(--status-grn-bg)":"var(--brand-red)",color:SB_URL?"var(--brand-green)":"#fff",border:"1px solid "+(SB_URL?"var(--brand-green)":"var(--brand-red)")}},SB_URL?L.live:"⚠ "+L.local),
     h("button",{onClick:handleThemeToggle,title:darkMode?"ライトモード":"ダークモード",style:{background:"none",border:"1px solid var(--brand-border)",borderRadius:20,padding:"5px 8px",cursor:"pointer",color:"var(--brand-muted)",display:"flex",alignItems:"center"}},Ico(darkMode?"sun":"moon",14))
   );
 
