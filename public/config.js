@@ -1,2 +1,2 @@
-window.__SB_URL__ = "https://xyaxdfqithxwqboogltn.supabase.co";
-window.__SB_KEY__ = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5YXhkZnFpdGh4d3Fib29nbHRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMjQzNzUsImV4cCI6MjA4NzYwMDM3NX0.crSH6_9t8bFsnoWMVHyxrmlpUxL2QIZXtfWCSQdnGpw";
+window.__SB_URL__ = "https://mqapkwlxlunyvsuhiujb.supabase.co";
+window.__SB_KEY__ = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xYXBrd2x4bHVueXZzdWhpdWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNTQyMzUsImV4cCI6MjA4ODkzMDIzNX0.3BCcAtsfMHHXemd-AYYfdIhLoWyZJ1crRl5jNrsReWk";

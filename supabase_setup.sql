@@ -1,3 +1,7 @@
+-- 2026-10: 冷蔵庫のテーブルは共通プロジェクト（cleaning-log / mqapkwlxlunyvsuhiujb）へ統合済み。
+-- 共通側では RLS を有効にし、anon / authenticated に読み書きを許可している。
+-- 以下は旧・専用プロジェクトでの初期設定（参考）。
+
 -- ① 消費期限・品目名テーブル
 create table if not exists fridge_items (
   id bigint generated always as identity primary key,
